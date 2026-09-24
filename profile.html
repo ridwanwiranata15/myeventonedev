@@ -1,0 +1,881 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Profil Saya — Tixora</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: { sans: ['Plus Jakarta Sans', 'sans-serif'] },
+          colors: {
+            brand: { 50:'#eef2ff',100:'#e0e7ff',500:'#6366f1',600:'#4f46e5',700:'#4338ca' },
+            ink: '#0b1020'
+          },
+          boxShadow: {
+            glow: '0 20px 60px -20px rgba(99,102,241,.55)',
+            soft: '0 10px 40px -12px rgba(15,23,42,.15)'
+          },
+          animation: {
+            'fade-up': 'fadeUp .7s ease-out both',
+            'fade-in': 'fadeIn .3s ease-out both',
+            'scale-in': 'scaleIn .3s cubic-bezier(.2,.9,.3,1.2) both',
+          },
+          keyframes: {
+            fadeUp: {
+              '0%': { opacity: 0, transform: 'translateY(16px)' },
+              '100%': { opacity: 1, transform: 'translateY(0)' },
+            },
+            fadeIn: {
+              '0%': { opacity: 0 },
+              '100%': { opacity: 1 },
+            },
+            scaleIn: {
+              '0%': { opacity: 0, transform: 'scale(.95)' },
+              '100%': { opacity: 1, transform: 'scale(1)' },
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    .glass { backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); }
+    .text-gradient {
+      background: linear-gradient(90deg,#818cf8,#c084fc,#f472b6);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+    .mesh {
+      background:
+        radial-gradient(60% 60% at 15% 10%, rgba(99,102,241,.35) 0%, transparent 60%),
+        radial-gradient(50% 50% at 85% 20%, rgba(192,132,252,.30) 0%, transparent 60%),
+        radial-gradient(60% 60% at 50% 100%, rgba(244,114,182,.22) 0%, transparent 60%);
+    }
+    input:focus, select:focus, textarea:focus { outline: none; }
+    input[readonly] { cursor: default; }
+    input[readonly]:focus {
+      background: rgba(255,255,255,.05) !important;
+      border-color: rgba(255,255,255,.1) !important;
+      box-shadow: none !important;
+    }
+    .tab-btn.active {
+      background: linear-gradient(135deg, rgba(99,102,241,.35), rgba(192,132,252,.25));
+      border-color: rgba(129,140,248,.6);
+      color: #fff;
+    }
+  </style>
+</head>
+
+<body class="bg-ink text-slate-100 font-sans antialiased min-h-screen">
+
+  <!-- Background Decor -->
+  <div class="fixed inset-0 mesh pointer-events-none -z-10"></div>
+  <div class="fixed top-[-10%] left-[-10%] w-[500px] h-[500px] bg-brand-600/20 blur-[120px] rounded-full -z-10"></div>
+  <div class="fixed bottom-[-10%] right-[-10%] w-[500px] h-[500px] bg-fuchsia-500/20 blur-[120px] rounded-full -z-10"></div>
+
+  <!-- ===== NAVBAR ===== -->
+  <header class="fixed top-4 left-0 right-0 z-40 px-4">
+    <nav class="glass mx-auto max-w-7xl bg-white/5 border border-white/10 rounded-2xl shadow-soft">
+      <div class="px-3 sm:px-5">
+        <div class="flex items-center gap-3 h-16">
+          <a href="#" class="flex items-center gap-2 group flex-shrink-0">
+            <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-brand-500 to-fuchsia-500 grid place-items-center shadow-glow group-hover:scale-105 transition">
+              <svg class="w-5 h-5 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M3 9a3 3 0 0 0 0 6v3a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-3a3 3 0 0 1 0-6V6a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2z"/>
+              </svg>
+            </div>
+            <span class="text-lg font-extrabold tracking-tight hidden sm:inline">Tix<span class="text-gradient">ora</span></span>
+          </a>
+
+          <ul class="hidden md:flex items-center gap-0.5 text-sm font-medium ml-4">
+            <li><a href="#" class="px-3 py-2 rounded-xl text-slate-200 hover:text-white hover:bg-white/10 transition">Home</a></li>
+            <li><a href="#" class="px-3 py-2 rounded-xl text-slate-200 hover:text-white hover:bg-white/10 transition">Event</a></li>
+            <li><a href="#" class="px-3 py-2 rounded-xl text-slate-200 hover:text-white hover:bg-white/10 transition">Tiket Saya</a></li>
+          </ul>
+
+          <div class="ml-auto flex items-center gap-2">
+            <!-- User dropdown trigger -->
+            <button id="userMenuBtn" class="flex items-center gap-2 pl-1 pr-3 py-1 rounded-full bg-white/5 border border-white/10 hover:bg-white/10 transition">
+              <span class="w-8 h-8 rounded-full bg-gradient-to-br from-brand-500 to-fuchsia-500 grid place-items-center font-extrabold text-xs">AP</span>
+              <span class="hidden sm:inline text-sm font-semibold">Andi</span>
+              <svg class="w-3.5 h-3.5 text-slate-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="m6 9 6 6 6-6"/></svg>
+            </button>
+
+            <button id="burger" class="md:hidden inline-flex items-center justify-center w-10 h-10 rounded-xl border border-white/10 hover:bg-white/10 transition" aria-label="Menu">
+              <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                <path d="M4 7h16M4 12h16M4 17h16"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <div id="mobileMenu" class="md:hidden hidden pb-4">
+          <div class="flex flex-col gap-1 pt-2 border-t border-white/10">
+            <a href="#" class="px-4 py-3 rounded-xl hover:bg-white/10 transition">Home</a>
+            <a href="#" class="px-4 py-3 rounded-xl hover:bg-white/10 transition">Event</a>
+            <a href="#" class="px-4 py-3 rounded-xl hover:bg-white/10 transition">Tiket Saya</a>
+            <a href="#" class="px-4 py-3 rounded-xl bg-white/10 transition font-semibold">Profil Saya</a>
+          </div>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <!-- ===== MAIN ===== -->
+  <main class="pt-28 sm:pt-32 pb-16 px-4">
+    <div class="max-w-6xl mx-auto">
+
+      <!-- Breadcrumb -->
+      <nav class="flex items-center gap-2 text-xs sm:text-sm text-slate-400 mb-6 flex-wrap">
+        <a href="#" class="hover:text-white transition">Home</a>
+        <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M9 6l6 6-6 6"/></svg>
+        <span class="text-slate-200 font-semibold">Profil Saya</span>
+      </nav>
+
+      <div class="grid lg:grid-cols-12 gap-6 md:gap-8 items-start">
+
+        <!-- ============ SIDEBAR KIRI ============ -->
+        <aside class="lg:col-span-4 space-y-6 lg:sticky lg:top-24 animate-fade-up">
+
+          <!-- Profil Card -->
+          <div class="glass bg-white/5 border border-white/10 rounded-3xl p-6 shadow-soft text-center">
+
+            <!-- Avatar -->
+            <div class="relative inline-block">
+              <div class="w-24 h-24 sm:w-28 sm:h-28 mx-auto rounded-full bg-gradient-to-br from-brand-500 to-fuchsia-500 grid place-items-center shadow-glow">
+                <span class="text-3xl sm:text-4xl font-extrabold text-white">AP</span>
+              </div>
+              <button class="absolute bottom-0 right-0 w-9 h-9 rounded-full bg-ink border-2 border-white/15 grid place-items-center hover:bg-brand-600 transition" title="Ganti foto">
+                <svg class="w-4 h-4 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/>
+                </svg>
+              </button>
+            </div>
+
+            <!-- Nama + badge -->
+            <h2 class="mt-4 text-xl font-extrabold tracking-tight">Andi Pratama</h2>
+            <div class="mt-2 flex items-center justify-center gap-2 flex-wrap">
+              <span class="inline-flex items-center gap-1 text-[11px] font-bold px-2.5 py-1 rounded-full bg-emerald-500/20 border border-emerald-500/40 text-emerald-200">
+                <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M5 13l4 4L19 7"/></svg>
+                Terverifikasi
+              </span>
+              <span class="inline-flex items-center gap-1 text-[11px] font-bold px-2.5 py-1 rounded-full bg-brand-600/25 border border-brand-500/40 text-brand-100">
+                ⭐ Member
+              </span>
+            </div>
+
+            <p class="mt-3 text-sm text-slate-400">andi.pratama@email.com</p>
+
+            <!-- Stats -->
+            <div class="mt-6 grid grid-cols-3 gap-2 text-center pt-5 border-t border-white/10">
+              <div>
+                <div class="text-lg font-extrabold text-gradient">12</div>
+                <div class="text-[10px] font-semibold uppercase tracking-wider text-slate-400 mt-0.5">Event</div>
+              </div>
+              <div class="border-x border-white/10">
+                <div class="text-lg font-extrabold text-gradient">8</div>
+                <div class="text-[10px] font-semibold uppercase tracking-wider text-slate-400 mt-0.5">Sertifikat</div>
+              </div>
+              <div>
+                <div class="text-lg font-extrabold text-gradient">3</div>
+                <div class="text-[10px] font-semibold uppercase tracking-wider text-slate-400 mt-0.5">Favorit</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Navigasi Menu -->
+          <div class="glass bg-white/5 border border-white/10 rounded-3xl p-3 shadow-soft">
+            <nav class="flex flex-col">
+              <a href="#profile" class="tab-btn active flex items-center gap-3 px-4 py-3 rounded-2xl border border-transparent text-sm font-semibold text-slate-300 hover:bg-white/5 transition">
+                <svg class="w-4.5 h-4.5" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/>
+                </svg>
+                Data Profil
+              </a>
+              <a href="#" class="tab-btn flex items-center gap-3 px-4 py-3 rounded-2xl border border-transparent text-sm font-semibold text-slate-300 hover:bg-white/5 transition">
+                <svg class="w-4.5 h-4.5" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M3 9a3 3 0 0 0 0 6v3a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-3a3 3 0 0 1 0-6V6a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2z"/>
+                </svg>
+                Tiket Saya
+                <span class="ml-auto text-[10px] font-bold px-2 py-0.5 rounded-full bg-brand-600/40 border border-brand-500/50 text-brand-100">12</span>
+              </a>
+              <a href="#" class="tab-btn flex items-center gap-3 px-4 py-3 rounded-2xl border border-transparent text-sm font-semibold text-slate-300 hover:bg-white/5 transition">
+                <svg class="w-4.5 h-4.5" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="12" cy="8" r="6"/><path d="M9 14l-2 8 5-3 5 3-2-8"/>
+                </svg>
+                Sertifikat
+              </a>
+              <a href="#" class="tab-btn flex items-center gap-3 px-4 py-3 rounded-2xl border border-transparent text-sm font-semibold text-slate-300 hover:bg-white/5 transition">
+                <svg class="w-4.5 h-4.5" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/>
+                </svg>
+                Event Favorit
+              </a>
+              <a href="#" class="tab-btn flex items-center gap-3 px-4 py-3 rounded-2xl border border-transparent text-sm font-semibold text-slate-300 hover:bg-white/5 transition">
+                <svg class="w-4.5 h-4.5" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/>
+                </svg>
+                Keamanan
+              </a>
+              <div class="my-2 border-t border-white/10"></div>
+              <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-2xl border border-transparent text-sm font-semibold text-rose-300 hover:bg-rose-500/10 hover:border-rose-500/30 transition">
+                <svg class="w-4.5 h-4.5" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="m16 17 5-5-5-5"/><path d="M21 12H9"/>
+                </svg>
+                Keluar
+              </a>
+            </nav>
+          </div>
+
+        </aside>
+
+        <!-- ============ KONTEN KANAN ============ -->
+        <section class="lg:col-span-8 space-y-6">
+
+          <!-- ===== DATA PRIBADI ===== -->
+          <div id="profile" class="glass bg-white/5 border border-white/10 rounded-3xl p-6 sm:p-8 shadow-soft animate-fade-up">
+
+            <div class="flex items-center justify-between flex-wrap gap-3 mb-6">
+              <div>
+                <h2 class="text-xl sm:text-2xl font-extrabold tracking-tight flex items-center gap-2">
+                  <span class="w-1 h-6 rounded-full bg-gradient-to-b from-brand-500 to-fuchsia-500"></span>
+                  Data Profil
+                </h2>
+                <p class="mt-1 text-sm text-slate-400">Informasi akun yang terdaftar di Tixora.</p>
+              </div>
+              <button id="editToggle" class="inline-flex items-center gap-2 text-sm font-semibold px-4 py-2 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 transition">
+                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/>
+                </svg>
+                <span id="editToggleText">Edit Profil</span>
+              </button>
+            </div>
+
+            <form id="profileForm" class="space-y-5" novalidate>
+
+              <!-- Nama Lengkap -->
+              <div>
+                <label for="nama" class="block text-sm font-semibold text-slate-200 mb-2">Nama Lengkap</label>
+                <div class="relative">
+                  <span class="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/>
+                    </svg>
+                  </span>
+                  <input type="text" id="nama" value="Andi Pratama" readonly
+                    class="profile-input w-full pl-11 pr-4 py-3 rounded-xl bg-white/5 border border-white/10 text-sm text-white placeholder:text-slate-500 transition" />
+                </div>
+              </div>
+
+              <!-- Email + HP -->
+              <div class="grid sm:grid-cols-2 gap-5">
+                <div>
+                  <label for="email" class="block text-sm font-semibold text-slate-200 mb-2">
+                    Alamat Email
+                    <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-500/20 border border-emerald-500/40 text-emerald-200 ml-1">✓ Verified</span>
+                  </label>
+                  <div class="relative">
+                    <span class="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none">
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/>
+                      </svg>
+                    </span>
+                    <input type="email" id="email" value="andi.pratama@email.com" readonly
+                      class="profile-input w-full pl-11 pr-4 py-3 rounded-xl bg-white/5 border border-white/10 text-sm text-white placeholder:text-slate-500 transition" />
+                  </div>
+                </div>
+
+                <div>
+                  <label for="hp" class="block text-sm font-semibold text-slate-200 mb-2">No. Handphone</label>
+                  <div class="relative">
+                    <span class="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none">
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="7" y="2" width="10" height="20" rx="2"/><path d="M12 18h.01"/>
+                      </svg>
+                    </span>
+                    <input type="tel" id="hp" value="0812 3456 7890" readonly
+                      class="profile-input w-full pl-11 pr-4 py-3 rounded-xl bg-white/5 border border-white/10 text-sm text-white placeholder:text-slate-500 transition" />
+                  </div>
+                </div>
+              </div>
+
+              <!-- Alamat -->
+              <div>
+                <label for="alamat" class="block text-sm font-semibold text-slate-200 mb-2">Alamat Tempat Tinggal</label>
+                <div class="relative">
+                  <span class="absolute left-3.5 top-3.5 text-slate-400 pointer-events-none">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M21 10c0 7-9 12-9 12s-9-5-9-12a9 9 0 1 1 18 0z"/><circle cx="12" cy="10" r="3"/>
+                    </svg>
+                  </span>
+                  <textarea id="alamat" rows="3" readonly
+                    class="profile-input w-full pl-11 pr-4 py-3 rounded-xl bg-white/5 border border-white/10 text-sm text-white placeholder:text-slate-500 transition resize-none">Jl. Merdeka No. 12, RT 03 / RW 05, Kel. Menteng, Kec. Menteng, Jakarta Pusat, DKI Jakarta 10310</textarea>
+                </div>
+              </div>
+
+              <!-- Pendidikan + Tgl Lahir -->
+              <div class="grid sm:grid-cols-2 gap-5">
+                <div>
+                  <label for="pendidikan" class="block text-sm font-semibold text-slate-200 mb-2">Pendidikan Terakhir</label>
+                  <div class="relative">
+                    <span class="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none">
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M22 10 12 4 2 10l10 6 10-6z"/><path d="M6 12v5c0 1 3 3 6 3s6-2 6-3v-5"/>
+                      </svg>
+                    </span>
+                    <select id="pendidikan" disabled
+                      class="profile-input w-full appearance-none pl-11 pr-10 py-3 rounded-xl bg-white/5 border border-white/10 text-sm text-white transition cursor-pointer">
+                      <option value="SD">SD / Sederajat</option>
+                      <option value="SMP">SMP / Sederajat</option>
+                      <option value="SMA/SMK">SMA / SMK / Sederajat</option>
+                      <option value="D3">Diploma (D3)</option>
+                      <option value="D4/S1" selected>Sarjana (D4 / S1)</option>
+                      <option value="S2">Magister (S2)</option>
+                      <option value="S3">Doktor (S3)</option>
+                      <option value="Lainnya">Lainnya</option>
+                    </select>
+                    <span class="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none">
+                      <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+                    </span>
+                  </div>
+                </div>
+
+                <div>
+                  <label for="tgllahir" class="block text-sm font-semibold text-slate-200 mb-2">Tanggal Lahir</label>
+                  <div class="relative">
+                    <span class="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none">
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/>
+                      </svg>
+                    </span>
+                    <input type="text" id="tgllahir" value="15 Maret 1998" readonly
+                      class="profile-input w-full pl-11 pr-4 py-3 rounded-xl bg-white/5 border border-white/10 text-sm text-white placeholder:text-slate-500 transition" />
+                  </div>
+                </div>
+              </div>
+
+              <!-- Action buttons (muncul saat edit) -->
+              <div id="profileActions" class="hidden items-center gap-3 pt-2">
+                <button type="submit" class="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-gradient-to-r from-brand-500 to-fuchsia-500 text-white font-semibold shadow-glow hover:scale-[1.02] transition text-sm">
+                  <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"/></svg>
+                  Simpan Perubahan
+                </button>
+                <button type="button" id="cancelEdit" class="px-6 py-3 rounded-xl border border-white/15 bg-white/5 hover:bg-white/10 font-semibold text-sm transition">
+                  Batal
+                </button>
+              </div>
+            </form>
+          </div>
+
+          <!-- ===== KEAMANAN AKUN ===== -->
+          <div class="glass bg-white/5 border border-white/10 rounded-3xl p-6 sm:p-8 shadow-soft animate-fade-up">
+
+            <div class="mb-6">
+              <h2 class="text-xl sm:text-2xl font-extrabold tracking-tight flex items-center gap-2">
+                <span class="w-1 h-6 rounded-full bg-gradient-to-b from-brand-500 to-fuchsia-500"></span>
+                Keamanan Akun
+              </h2>
+              <p class="mt-1 text-sm text-slate-400">Kelola password dan keamanan akun kamu.</p>
+            </div>
+
+            <div class="space-y-3">
+
+              <!-- Reset Password -->
+              <div class="flex items-start sm:items-center gap-4 p-4 sm:p-5 rounded-2xl bg-white/5 border border-white/10 hover:border-brand-500/40 transition group">
+                <span class="w-11 h-11 rounded-xl bg-brand-600/25 border border-brand-500/40 grid place-items-center flex-shrink-0 group-hover:scale-105 transition">
+                  <svg class="w-5 h-5 text-brand-100" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/>
+                  </svg>
+                </span>
+                <div class="flex-1 min-w-0">
+                  <div class="font-bold text-white">Reset Password</div>
+                  <div class="text-xs sm:text-sm text-slate-400 mt-0.5">
+                    Ubah password akun kamu secara berkala untuk menjaga keamanan.
+                  </div>
+                  <div class="mt-1.5 inline-flex items-center gap-1.5 text-[11px] text-slate-400">
+                    <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+                    Terakhir diubah: 3 bulan yang lalu
+                  </div>
+                </div>
+                <button type="button" id="openResetModal"
+                  class="flex-shrink-0 inline-flex items-center gap-1.5 text-xs sm:text-sm font-bold px-4 py-2.5 rounded-xl bg-gradient-to-r from-brand-500 to-fuchsia-500 text-white shadow-glow hover:scale-[1.03] transition whitespace-nowrap">
+                  <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-3-6.7"/><path d="M21 3v6h-6"/></svg>
+                  Reset
+                </button>
+              </div>
+
+              <!-- 2FA -->
+              <div class="flex items-start sm:items-center gap-4 p-4 sm:p-5 rounded-2xl bg-white/5 border border-white/10 hover:border-fuchsia-500/40 transition group">
+                <span class="w-11 h-11 rounded-xl bg-fuchsia-600/25 border border-fuchsia-500/40 grid place-items-center flex-shrink-0 group-hover:scale-105 transition">
+                  <svg class="w-5 h-5 text-fuchsia-200" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/>
+                  </svg>
+                </span>
+                <div class="flex-1 min-w-0">
+                  <div class="font-bold text-white flex items-center gap-2 flex-wrap">
+                    Verifikasi 2 Langkah (2FA)
+                    <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-rose-500/20 border border-rose-500/40 text-rose-200">Nonaktif</span>
+                  </div>
+                  <div class="text-xs sm:text-sm text-slate-400 mt-0.5">
+                    Tambahkan lapisan keamanan ekstra saat login.
+                  </div>
+                </div>
+                <button class="flex-shrink-0 text-xs sm:text-sm font-semibold px-4 py-2.5 rounded-xl bg-white/5 border border-white/15 hover:bg-white/10 transition whitespace-nowrap">
+                  Aktifkan
+                </button>
+              </div>
+
+              <!-- Sesi Login -->
+              <div class="flex items-start sm:items-center gap-4 p-4 sm:p-5 rounded-2xl bg-white/5 border border-white/10 hover:border-emerald-500/40 transition group">
+                <span class="w-11 h-11 rounded-xl bg-emerald-600/25 border border-emerald-500/40 grid place-items-center flex-shrink-0 group-hover:scale-105 transition">
+                  <svg class="w-5 h-5 text-emerald-200" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="2" y="4" width="20" height="14" rx="2"/><path d="M8 20h8M12 18v2"/>
+                  </svg>
+                </span>
+                <div class="flex-1 min-w-0">
+                  <div class="font-bold text-white">Perangkat Aktif</div>
+                  <div class="text-xs sm:text-sm text-slate-400 mt-0.5">
+                    <span class="inline-flex items-center gap-1">
+                      <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+                      Chrome • Jakarta, ID — Sekarang
+                    </span>
+                  </div>
+                </div>
+                <button class="flex-shrink-0 text-xs sm:text-sm font-semibold px-4 py-2.5 rounded-xl bg-white/5 border border-white/15 hover:bg-white/10 transition whitespace-nowrap">
+                  Kelola
+                </button>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- ===== PREFERENSI NOTIFIKASI ===== -->
+          <div class="glass bg-white/5 border border-white/10 rounded-3xl p-6 sm:p-8 shadow-soft animate-fade-up">
+            <div class="mb-6">
+              <h2 class="text-xl sm:text-2xl font-extrabold tracking-tight flex items-center gap-2">
+                <span class="w-1 h-6 rounded-full bg-gradient-to-b from-brand-500 to-fuchsia-500"></span>
+                Notifikasi
+              </h2>
+              <p class="mt-1 text-sm text-slate-400">Atur notifikasi yang ingin kamu terima.</p>
+            </div>
+
+            <div class="space-y-3">
+              <label class="flex items-center justify-between gap-4 p-4 rounded-2xl bg-white/5 border border-white/10 hover:bg-white/10 cursor-pointer transition">
+                <div>
+                  <div class="text-sm font-semibold text-white">Email Promo & Diskon</div>
+                  <div class="text-xs text-slate-400 mt-0.5">Notifikasi event promo dan diskon tiket.</div>
+                </div>
+                <input type="checkbox" checked class="peer sr-only" />
+                <span class="relative w-11 h-6 rounded-full bg-white/10 peer-checked:bg-gradient-to-r peer-checked:from-brand-500 peer-checked:to-fuchsia-500 transition flex-shrink-0">
+                  <span class="absolute top-0.5 left-0.5 w-5 h-5 rounded-full bg-white shadow-sm transition-transform peer-checked:translate-x-5"></span>
+                </span>
+              </label>
+
+              <label class="flex items-center justify-between gap-4 p-4 rounded-2xl bg-white/5 border border-white/10 hover:bg-white/10 cursor-pointer transition">
+                <div>
+                  <div class="text-sm font-semibold text-white">Pengingat Event</div>
+                  <div class="text-xs text-slate-400 mt-0.5">Reminder H-1 sebelum event yang kamu ikuti.</div>
+                </div>
+                <input type="checkbox" checked class="peer sr-only" />
+                <span class="relative w-11 h-6 rounded-full bg-white/10 peer-checked:bg-gradient-to-r peer-checked:from-brand-500 peer-checked:to-fuchsia-500 transition flex-shrink-0">
+                  <span class="absolute top-0.5 left-0.5 w-5 h-5 rounded-full bg-white shadow-sm transition-transform peer-checked:translate-x-5"></span>
+                </span>
+              </label>
+
+              <label class="flex items-center justify-between gap-4 p-4 rounded-2xl bg-white/5 border border-white/10 hover:bg-white/10 cursor-pointer transition">
+                <div>
+                  <div class="text-sm font-semibold text-white">Sertifikat Terbit</div>
+                  <div class="text-xs text-slate-400 mt-0.5">Notifikasi saat e-sertifikat event sudah tersedia.</div>
+                </div>
+                <input type="checkbox" checked class="peer sr-only" />
+                <span class="relative w-11 h-6 rounded-full bg-white/10 peer-checked:bg-gradient-to-r peer-checked:from-brand-500 peer-checked:to-fuchsia-500 transition flex-shrink-0">
+                  <span class="absolute top-0.5 left-0.5 w-5 h-5 rounded-full bg-white shadow-sm transition-transform peer-checked:translate-x-5"></span>
+                </span>
+              </label>
+            </div>
+          </div>
+
+        </section>
+      </div>
+    </div>
+  </main>
+
+  <!-- ============================================================
+       MODAL RESET PASSWORD
+       ============================================================ -->
+  <div id="resetModal" class="fixed inset-0 z-[60] hidden items-center justify-center p-4 bg-ink/70 backdrop-blur-sm">
+    <div class="glass bg-ink/80 border border-white/10 rounded-3xl w-full max-w-md shadow-glow animate-scale-in" role="dialog" aria-modal="true">
+
+      <!-- Header -->
+      <div class="flex items-start justify-between gap-4 p-6 pb-4">
+        <div class="flex items-start gap-3">
+          <span class="w-11 h-11 rounded-xl bg-brand-600/25 border border-brand-500/40 grid place-items-center flex-shrink-0">
+            <svg class="w-5 h-5 text-brand-100" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/>
+            </svg>
+          </span>
+          <div>
+            <h3 class="text-lg font-extrabold tracking-tight">Reset Password</h3>
+            <p class="text-xs text-slate-400 mt-0.5">Masukkan password lama & password baru.</p>
+          </div>
+        </div>
+        <button id="closeResetModal" class="p-2 rounded-lg hover:bg-white/10 text-slate-400 hover:text-white transition -mt-1 -mr-1" aria-label="Tutup">
+          <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+        </button>
+      </div>
+
+      <!-- Body -->
+      <form id="resetForm" class="px-6 pb-6 space-y-4" novalidate>
+
+        <!-- Password lama -->
+        <div class="field-group">
+          <label for="oldPass" class="block text-sm font-semibold text-slate-200 mb-2">Password Lama <span class="text-rose-400">*</span></label>
+          <div class="relative">
+            <span class="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/>
+              </svg>
+            </span>
+            <input type="password" id="oldPass" placeholder="Password saat ini"
+              class="w-full pl-11 pr-11 py-3 rounded-xl bg-white/5 border border-white/10 text-sm text-white placeholder:text-slate-500 focus:bg-white/10 focus:border-brand-500/60 focus:ring-2 focus:ring-brand-500/25 transition" />
+            <button type="button" data-toggle="oldPass" class="absolute right-3 top-1/2 -translate-y-1/2 p-1.5 rounded-lg hover:bg-white/10 text-slate-400 hover:text-white transition">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/>
+              </svg>
+            </button>
+          </div>
+          <p class="error-msg hidden items-center gap-1.5 text-xs text-rose-300 mt-2">
+            <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 8v4M12 16h.01"/></svg>
+            <span class="error-text">Password lama wajib diisi.</span>
+          </p>
+        </div>
+
+        <!-- Password baru -->
+        <div class="field-group">
+          <label for="newPass" class="block text-sm font-semibold text-slate-200 mb-2">Password Baru <span class="text-rose-400">*</span></label>
+          <div class="relative">
+            <span class="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/>
+              </svg>
+            </span>
+            <input type="password" id="newPass" placeholder="Min. 8 karakter"
+              class="w-full pl-11 pr-11 py-3 rounded-xl bg-white/5 border border-white/10 text-sm text-white placeholder:text-slate-500 focus:bg-white/10 focus:border-brand-500/60 focus:ring-2 focus:ring-brand-500/25 transition" />
+            <button type="button" data-toggle="newPass" class="absolute right-3 top-1/2 -translate-y-1/2 p-1.5 rounded-lg hover:bg-white/10 text-slate-400 hover:text-white transition">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/>
+              </svg>
+            </button>
+          </div>
+          <!-- strength -->
+          <div class="flex gap-1.5 mt-3">
+            <span data-reset-bar class="h-1.5 flex-1 rounded-full bg-white/10 transition"></span>
+            <span data-reset-bar class="h-1.5 flex-1 rounded-full bg-white/10 transition"></span>
+            <span data-reset-bar class="h-1.5 flex-1 rounded-full bg-white/10 transition"></span>
+            <span data-reset-bar class="h-1.5 flex-1 rounded-full bg-white/10 transition"></span>
+          </div>
+          <div class="flex items-center justify-between mt-2">
+            <span id="resetStrengthText" class="text-xs text-slate-500">Kekuatan password</span>
+          </div>
+          <p class="error-msg hidden items-center gap-1.5 text-xs text-rose-300 mt-2">
+            <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 8v4M12 16h.01"/></svg>
+            <span class="error-text">Password minimal 8 karakter.</span>
+          </p>
+        </div>
+
+        <!-- Konfirmasi -->
+        <div class="field-group">
+          <label for="confirmPass" class="block text-sm font-semibold text-slate-200 mb-2">Konfirmasi Password Baru <span class="text-rose-400">*</span></label>
+          <div class="relative">
+            <span class="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/><path d="m9 16 2 2 4-4"/>
+              </svg>
+            </span>
+            <input type="password" id="confirmPass" placeholder="Ulangi password baru"
+              class="w-full pl-11 pr-11 py-3 rounded-xl bg-white/5 border border-white/10 text-sm text-white placeholder:text-slate-500 focus:bg-white/10 focus:border-brand-500/60 focus:ring-2 focus:ring-brand-500/25 transition" />
+            <button type="button" data-toggle="confirmPass" class="absolute right-3 top-1/2 -translate-y-1/2 p-1.5 rounded-lg hover:bg-white/10 text-slate-400 hover:text-white transition">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/>
+              </svg>
+            </button>
+          </div>
+          <div id="resetMatch" class="hidden mt-2 items-center gap-1.5 text-xs font-semibold"></div>
+          <p class="error-msg hidden items-center gap-1.5 text-xs text-rose-300 mt-2">
+            <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 8v4M12 16h.01"/></svg>
+            <span class="error-text">Konfirmasi password tidak cocok.</span>
+          </p>
+        </div>
+
+        <!-- Info -->
+        <div class="flex items-start gap-2.5 p-3 rounded-xl bg-brand-600/15 border border-brand-500/30">
+          <svg class="w-4 h-4 text-brand-100 flex-shrink-0 mt-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 8v4M12 16h.01"/></svg>
+          <p class="text-xs text-brand-100/90 leading-relaxed">
+            Setelah reset, kamu akan diminta login ulang di semua perangkat.
+          </p>
+        </div>
+
+        <!-- Buttons -->
+        <div class="flex flex-col-reverse sm:flex-row gap-3 pt-2">
+          <button type="button" id="cancelReset"
+            class="w-full sm:w-auto sm:flex-1 py-3 rounded-xl border border-white/15 bg-white/5 hover:bg-white/10 font-semibold text-sm transition">
+            Batal
+          </button>
+          <button type="submit"
+            class="w-full sm:w-auto sm:flex-1 py-3 rounded-xl bg-gradient-to-r from-brand-500 to-fuchsia-500 text-white font-bold shadow-glow hover:scale-[1.02] transition text-sm inline-flex items-center justify-center gap-2 disabled:opacity-60 disabled:pointer-events-none">
+            <span class="reset-btn-text inline-flex items-center gap-2">
+              <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"/></svg>
+              Reset Password
+            </span>
+            <svg class="reset-btn-spinner hidden w-4 h-4 animate-spin" viewBox="0 0 24 24" fill="none">
+              <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="3" opacity=".25"/>
+              <path d="M21 12a9 9 0 0 0-9-9" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+            </svg>
+          </button>
+        </div>
+
+      </form>
+    </div>
+  </div>
+
+  <!-- ===== TOAST ===== -->
+  <div id="toast" class="fixed bottom-6 left-1/2 -translate-x-1/2 z-[70] hidden">
+    <div class="glass bg-emerald-500/15 border border-emerald-500/40 rounded-2xl px-5 py-4 shadow-glow flex items-center gap-3 min-w-[280px] max-w-[90vw]">
+      <span class="w-9 h-9 rounded-xl bg-emerald-500/30 border border-emerald-500/50 grid place-items-center flex-shrink-0">
+        <svg class="w-5 h-5 text-emerald-200" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"/></svg>
+      </span>
+      <div>
+        <div class="font-bold text-sm text-white" id="toastTitle">Berhasil!</div>
+        <div class="text-xs text-emerald-100/90" id="toastMsg">Perubahan telah disimpan.</div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    /* ========== Burger ========== */
+    document.getElementById('burger').addEventListener('click', () => {
+      document.getElementById('mobileMenu').classList.toggle('hidden');
+    });
+
+    /* ========== Toast helper ========== */
+    const toast = document.getElementById('toast');
+    const toastTitle = document.getElementById('toastTitle');
+    const toastMsg = document.getElementById('toastMsg');
+    function showToast(title, msg) {
+      toastTitle.textContent = title;
+      toastMsg.textContent = msg;
+      toast.classList.remove('hidden');
+      toast.classList.add('animate-fade-in');
+      setTimeout(() => {
+        toast.classList.add('hidden');
+        toast.classList.remove('animate-fade-in');
+      }, 3000);
+    }
+
+    /* ========== Edit Profile Toggle ========== */
+    const editToggle = document.getElementById('editToggle');
+    const editToggleText = document.getElementById('editToggleText');
+    const profileInputs = document.querySelectorAll('.profile-input');
+    const profileActions = document.getElementById('profileActions');
+    const profileForm = document.getElementById('profileForm');
+    let editing = false;
+
+    // simpan nilai awal untuk cancel
+    const initialValues = {};
+    profileInputs.forEach(i => initialValues[i.id] = i.value);
+
+    editToggle.addEventListener('click', () => {
+      editing = !editing;
+      profileInputs.forEach(input => {
+        if (input.tagName === 'SELECT') {
+          input.disabled = !editing;
+        } else {
+          input.readOnly = !editing;
+        }
+      });
+
+      if (editing) {
+        editToggleText.textContent = 'Selesai Edit';
+        profileActions.classList.remove('hidden');
+        profileActions.classList.add('flex');
+        document.getElementById('nama').focus();
+      } else {
+        editToggleText.textContent = 'Edit Profil';
+        profileActions.classList.add('hidden');
+        profileActions.classList.remove('flex');
+      }
+    });
+
+    document.getElementById('cancelEdit').addEventListener('click', () => {
+      profileInputs.forEach(input => {
+        input.value = initialValues[input.id];
+        if (input.tagName === 'SELECT') input.disabled = true;
+        else input.readOnly = true;
+      });
+      editing = false;
+      editToggleText.textContent = 'Edit Profil';
+      profileActions.classList.add('hidden');
+      profileActions.classList.remove('flex');
+    });
+
+    profileForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      editing = false;
+      profileInputs.forEach(input => {
+        if (input.tagName === 'SELECT') input.disabled = true;
+        else input.readOnly = true;
+      });
+      editToggleText.textContent = 'Edit Profil';
+      profileActions.classList.add('hidden');
+      profileActions.classList.remove('flex');
+      showToast('Profil Diperbarui', 'Perubahan data profil berhasil disimpan.');
+    });
+
+    /* ========== Show/Hide Password ========== */
+    document.querySelectorAll('[data-toggle]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const input = document.getElementById(btn.getAttribute('data-toggle'));
+        const isPw = input.type === 'password';
+        input.type = isPw ? 'text' : 'password';
+        btn.innerHTML = isPw
+          ? `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+               <path d="M9.88 9.88a3 3 0 1 0 4.24 4.24"/>
+               <path d="M10.73 5.08A10.4 10.4 0 0 1 12 5c6.5 0 10 7 10 7a13.2 13.2 0 0 1-1.67 2.68"/>
+               <path d="M6.61 6.61A13.2 13.2 0 0 0 2 12s3.5 7 10 7a10.4 10.4 0 0 0 5.39-1.5"/>
+               <path d="m2 2 20 20"/>
+             </svg>`
+          : `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+               <path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/>
+             </svg>`;
+      });
+    });
+
+    /* ========== Modal Reset Password ========== */
+    const resetModal = document.getElementById('resetModal');
+    const resetForm = document.getElementById('resetForm');
+    const oldPass = document.getElementById('oldPass');
+    const newPass = document.getElementById('newPass');
+    const confirmPass = document.getElementById('confirmPass');
+    const resetStrengthText = document.getElementById('resetStrengthText');
+    const resetBars = document.querySelectorAll('[data-reset-bar]');
+    const resetMatch = document.getElementById('resetMatch');
+
+    function openModal() {
+      resetModal.classList.remove('hidden');
+      resetModal.classList.add('flex');
+      document.body.style.overflow = 'hidden';
+      setTimeout(() => oldPass.focus(), 100);
+    }
+    function closeModal() {
+      resetModal.classList.add('hidden');
+      resetModal.classList.remove('flex');
+      document.body.style.overflow = '';
+      resetForm.reset();
+      resetBars.forEach(b => b.className = 'h-1.5 flex-1 rounded-full bg-white/10 transition');
+      resetStrengthText.textContent = 'Kekuatan password';
+      resetStrengthText.className = 'text-xs text-slate-500';
+      resetMatch.classList.add('hidden');
+      resetForm.querySelectorAll('.field-group').forEach(f => f.classList.remove('field-error'));
+    }
+    document.getElementById('openResetModal').addEventListener('click', openModal);
+    document.getElementById('closeResetModal').addEventListener('click', closeModal);
+    document.getElementById('cancelReset').addEventListener('click', closeModal);
+    resetModal.addEventListener('click', (e) => { if (e.target === resetModal) closeModal(); });
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && !resetModal.classList.contains('hidden')) closeModal();
+    });
+
+    /* ========== Reset: Strength ========== */
+    newPass.addEventListener('input', () => {
+      const v = newPass.value;
+      let score = 0;
+      if (v.length >= 8) score++;
+      if (/[A-Z]/.test(v)) score++;
+      if (/[0-9]/.test(v)) score++;
+      if (/[^A-Za-z0-9]/.test(v)) score++;
+
+      const colors = [
+        'bg-white/10','bg-rose-500','bg-amber-500','bg-emerald-500','bg-gradient-to-r from-emerald-500 to-teal-500'
+      ];
+      const labels = ['Kekuatan password','Lemah','Sedang','Kuat','Sangat Kuat'];
+      const textColors = ['text-slate-500','text-rose-300','text-amber-300','text-emerald-300','text-emerald-200'];
+
+      resetBars.forEach((bar, i) => {
+        bar.className = `h-1.5 flex-1 rounded-full transition ${i < score ? colors[score] : 'bg-white/10'}`;
+      });
+      resetStrengthText.textContent = labels[score];
+      resetStrengthText.className = `text-xs font-semibold ${textColors[score]}`;
+    });
+
+    /* ========== Reset: Match ========== */
+    function checkResetMatch() {
+      const p = newPass.value, c = confirmPass.value;
+      if (!c) { resetMatch.classList.add('hidden'); resetMatch.classList.remove('flex'); return; }
+      resetMatch.classList.remove('hidden');
+      resetMatch.classList.add('flex');
+      if (p === c) {
+        resetMatch.className = 'flex items-center gap-1.5 text-xs font-semibold text-emerald-300 mt-2';
+        resetMatch.innerHTML = `<svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M5 13l4 4L19 7"/></svg> Password cocok`;
+      } else {
+        resetMatch.className = 'flex items-center gap-1.5 text-xs font-semibold text-rose-300 mt-2';
+        resetMatch.innerHTML = `<svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg> Password tidak cocok`;
+      }
+    }
+    newPass.addEventListener('input', checkResetMatch);
+    confirmPass.addEventListener('input', checkResetMatch);
+
+    /* clear error on type */
+    resetForm.querySelectorAll('input').forEach(i => {
+      i.addEventListener('input', () => i.closest('.field-group')?.classList.remove('field-error'));
+    });
+
+    /* ========== Submit Reset ========== */
+    resetForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      let valid = true;
+
+      const clear = () => resetForm.querySelectorAll('.field-group').forEach(f => f.classList.remove('field-error'));
+      const err = (id, msg) => {
+        const field = document.getElementById(id).closest('.field-group');
+        field.classList.add('field-error');
+        field.querySelector('.error-text').textContent = msg;
+      };
+
+      clear();
+
+      if (!oldPass.value) { err('oldPass', 'Password lama wajib diisi.'); valid = false; }
+
+      if (!newPass.value) { err('newPass', 'Password baru wajib diisi.'); valid = false; }
+      else if (newPass.value.length < 8) { err('newPass', 'Password minimal 8 karakter.'); valid = false; }
+      else if (newPass.value === oldPass.value) { err('newPass', 'Password baru harus berbeda dari yang lama.'); valid = false; }
+
+      if (!confirmPass.value) { err('confirmPass', 'Konfirmasi password wajib diisi.'); valid = false; }
+      else if (newPass.value !== confirmPass.value) { err('confirmPass', 'Password tidak cocok.'); valid = false; }
+
+      if (!valid) return;
+
+      // Simulasi request ke backend
+      const btn = resetForm.querySelector('button[type="submit"]');
+      const txt = btn.querySelector('.reset-btn-text');
+      const spin = btn.querySelector('.reset-btn-spinner');
+      btn.disabled = true;
+      txt.classList.add('hidden');
+      spin.classList.remove('hidden');
+
+      setTimeout(() => {
+        btn.disabled = false;
+        txt.classList.remove('hidden');
+        spin.classList.add('hidden');
+        closeModal();
+        showToast('Password Berhasil Direset', 'Silakan login ulang dengan password baru.');
+      }, 1400);
+    });
+  </script>
+
+</body>
+</html>

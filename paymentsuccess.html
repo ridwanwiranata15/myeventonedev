@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pendaftaran Berhasil — Neon Nights Music Festival 2025</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: { sans: ['Plus Jakarta Sans', 'sans-serif'] },
+          colors: {
+            brand: { 50:'#eef2ff',100:'#e0e7ff',500:'#6366f1',600:'#4f46e5',700:'#4338ca' },
+            ink: '#0b1020'
+          },
+          boxShadow: {
+            glow: '0 20px 60px -20px rgba(99,102,241,.55)',
+            soft: '0 10px 40px -12px rgba(15,23,42,.15)'
+          },
+          animation: {
+            'fade-up': 'fadeUp .7s ease-out both',
+            'fade-in': 'fadeIn .5s ease-out both',
+            'scale-in': 'scaleIn .5s cubic-bezier(.2,.9,.3,1.2) both',
+            'pop': 'pop .5s cubic-bezier(.2,.9,.3,1.6) both',
+            'pulse-ring': 'pulseRing 2s ease-out infinite',
+            'check-draw': 'checkDraw .6s .3s ease-out both',
+            'confetti': 'confetti 3s linear infinite',
+          },
+          keyframes: {
+            fadeUp: {
+              '0%': { opacity: 0, transform: 'translateY(16px)' },
+              '100%': { opacity: 1, transform: 'translateY(0)' },
+            },
+            fadeIn: {
+              '0%': { opacity: 0 },
+              '100%': { opacity: 1 },
+            },
+            scaleIn: {
+              '0%': { opacity: 0, transform: 'scale(.9)' },
+              '100%': { opacity: 1, transform: 'scale(1)' },
+            },
+            pop: {
+              '0%': { opacity: 0, transform: 'scale(.6)' },
+              '100%': { opacity: 1, transform: 'scale(1)' },
+            },
+            pulseRing: {
+              '0%': { transform: 'scale(.85)', opacity: .7 },
+              '100%': { transform: 'scale(1.6)', opacity: 0 },
+            },
+            checkDraw: {
+              '0%': { strokeDasharray: '0 100', opacity: 0 },
+              '100%': { strokeDasharray: '100 100', opacity: 1 },
+            },
+            confetti: {
+              '0%': { transform: 'translateY(-100vh) rotate(0deg)', opacity: 1 },
+              '100%': { transform: 'translateY(100vh) rotate(720deg)', opacity: 0 },
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    .glass { backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); }
+    .text-gradient {
+      background: linear-gradient(90deg,#818cf8,#c084fc,#f472b6);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+    .mesh {
+      background:
+        radial-gradient(60% 60% at 15% 10%, rgba(99,102,241,.35) 0%, transparent 60%),
+        radial-gradient(50% 50% at 85% 20%, rgba(192,132,252,.30) 0%, transparent 60%),
+        radial-gradient(60% 60% at 50% 100%, rgba(244,114,182,.22) 0%, transparent 60%);
+    }
+    .text-gradient-success {
+      background: linear-gradient(90deg,#34d399,#10b981,#059669);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    /* Ticket stub effect */
+    .ticket {
+      position: relative;
+      background: linear-gradient(135deg, rgba(99,102,241,.15), rgba(192,132,252,.10));
+      border: 1px solid rgba(255,255,255,.1);
+    }
+    .ticket::before,
+    .ticket::after {
+      content: '';
+      position: absolute;
+      width: 24px;
+      height: 24px;
+      background: #0b1020;
+      border-radius: 50%;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+    .ticket::before { left: -12px; }
+    .ticket::after { right: -12px; }
+
+    .dashed-line {
+      background-image: linear-gradient(to right, rgba(255,255,255,.25) 50%, transparent 50%);
+      background-size: 10px 1px;
+      background-repeat: repeat-x;
+      height: 1px;
+    }
+
+    /* Confetti dots */
+    .confetti-dot {
+      position: absolute;
+      width: 8px;
+      height: 8px;
+      border-radius: 2px;
+      top: -10px;
+      animation: confetti 3s linear infinite;
+    }
+
+    /* QR placeholder */
+    .qr-pattern {
+      background-image:
+        linear-gradient(45deg, #0b1020 25%, transparent 25%),
+        linear-gradient(-45deg, #0b1020 25%, transparent 25%),
+        linear-gradient(45deg, transparent 75%, #0b1020 75%),
+        linear-gradient(-45deg, transparent 75%, #0b1020 75%);
+      background-size: 12px 12px;
+      background-position: 0 0, 0 6px, 6px -6px, -6px 0px;
+      background-color: #fff;
+    }
+  </style>
+</head>
+
+<body class="bg-ink text-slate-100 font-sans antialiased overflow-x-hidden">
+
+  <!-- Background Decor -->
+  <div class="fixed inset-0 mesh pointer-events-none -z-10"></div>
+  <div class="fixed top-[-10%] left-[-10%] w-[500px] h-[500px] bg-brand-600/20 blur-[120px] rounded-full -z-10"></div>
+  <div class="fixed bottom-[-10%] right-[-10%] w-[500px] h-[500px] bg-fuchsia-500/20 blur-[120px] rounded-full -z-10"></div>
+  <div class="fixed top-[30%] left-1/2 -translate-x-1/2 w-[700px] h-[700px] bg-emerald-500/10 blur-[140px] rounded-full -z-10"></div>
+
+  <!-- ===== CONFETTI (dekoratif) ===== -->
+  <div class="fixed inset-0 pointer-events-none -z-10 overflow-hidden" id="confettiWrap">
+    <div class="confetti-dot bg-brand-500" style="left: 8%; animation-delay: 0s;"></div>
+    <div class="confetti-dot bg-fuchsia-500" style="left: 18%; animation-delay: .4s;"></div>
+    <div class="confetti-dot bg-emerald-400" style="left: 28%; animation-delay: .8s;"></div>
+    <div class="confetti-dot bg-amber-400" style="left: 42%; animation-delay: .2s;"></div>
+    <div class="confetti-dot bg-rose-500" style="left: 55%; animation-delay: .6s;"></div>
+    <div class="confetti-dot bg-brand-400" style="left: 68%; animation-delay: 1s;"></div>
+    <div class="confetti-dot bg-fuchsia-400" style="left: 78%; animation-delay: .3s;"></div>
+    <div class="confetti-dot bg-emerald-500" style="left: 88%; animation-delay: .7s;"></div>
+  </div>
+
+  <!-- ===== NAVBAR MINIMAL ===== -->
+  <header class="fixed top-4 left-0 right-0 z-50 px-4">
+    <nav class="glass mx-auto max-w-7xl bg-white/5 border border-white/10 rounded-2xl shadow-soft">
+      <div class="px-4 sm:px-5">
+        <div class="flex items-center justify-between h-16">
+          <a href="#" class="flex items-center gap-2 group">
+            <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-brand-500 to-fuchsia-500 grid place-items-center shadow-glow group-hover:scale-105 transition">
+              <svg class="w-5 h-5 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M3 9a3 3 0 0 0 0 6v3a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-3a3 3 0 0 1 0-6V6a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2z"/>
+              </svg>
+            </div>
+            <span class="text-lg font-extrabold tracking-tight">Tix<span class="text-gradient">ora</span></span>
+          </a>
+
+          <div class="flex items-center gap-2">
+            <a href="#" class="hidden sm:inline-flex items-center gap-1.5 text-sm font-semibold text-slate-300 hover:text-white transition px-3 py-2 rounded-xl hover:bg-white/10">
+              <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M3 9a3 3 0 0 0 0 6v3a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-3a3 3 0 0 1 0-6V6a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2z"/>
+              </svg>
+              Tiket Saya
+            </a>
+            <span class="w-9 h-9 rounded-full bg-gradient-to-br from-brand-500 to-fuchsia-500 grid place-items-center font-extrabold text-xs">AP</span>
+          </div>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <!-- ===== MAIN ===== -->
+  <main class="pt-28 sm:pt-32 pb-20 px-4">
+    <div class="max-w-3xl mx-auto">
+
+      <!-- ===== SUCCESS HEADER ===== -->
+      <div class="text-center animate-fade-up">
+
+        <!-- Success Icon -->
+        <div class="relative inline-flex mb-6">
+          <div class="absolute inset-0 rounded-full bg-gradient-to-br from-emerald-400 to-emerald-600 blur-2xl opacity-60"></div>
+          <div class="relative w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-gradient-to-br from-emerald-400 to-emerald-600 grid place-items-center shadow-glow animate-pop">
+            <svg class="w-10 h-10 sm:w-12 sm:h-12 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+              <path class="animate-check-draw" d="M5 13l4 4L19 7" style="stroke-dasharray: 100;"/>
+            </svg>
+          </div>
+          <span class="absolute inset-0 rounded-full border-2 border-emerald-400/60 animate-pulse-ring"></span>
+          <span class="absolute inset-0 rounded-full border-2 border-emerald-400/40 animate-pulse-ring" style="animation-delay: .6s;"></span>
+        </div>
+
+        <h1 class="text-3xl sm:text-4xl md:text-5xl font-extrabold leading-tight tracking-tight">
+          Pendaftaran <span class="text-gradient-success">Berhasil!</span> 🎉
+        </h1>
+        <p class="mt-4 text-sm sm:text-base text-slate-400 max-w-lg mx-auto leading-relaxed">
+          Selamat! Kamu resmi terdaftar di event ini. E-Ticket dan detail pembayaran telah dikirim ke email kamu.
+        </p>
+
+        <!-- Order ID -->
+        <div class="mt-6 inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 text-xs sm:text-sm">
+          <span class="text-slate-400">Kode Order:</span>
+          <span class="font-bold text-white tracking-wider">TX-2025-1124-0842</span>
+          <button type="button" id="copyOrderId" class="p-1 rounded-md hover:bg-white/10 text-slate-400 hover:text-white transition" title="Salin kode">
+            <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- ===== E-TICKET CARD ===== -->
+      <div class="mt-10 glass bg-white/5 border border-white/10 rounded-3xl overflow-hidden shadow-glow animate-fade-up" style="animation-delay: .1s">
+
+        <!-- Ticket header -->
+        <div class="relative bg-gradient-to-br from-brand-600/40 via-fuchsia-500/30 to-brand-600/20 p-6 sm:p-8 border-b border-white/10">
+          <div class="flex items-start justify-between gap-4 flex-wrap">
+            <div class="flex items-center gap-3">
+              <span class="w-11 h-11 rounded-xl bg-brand-600/50 border border-brand-500/60 grid place-items-center flex-shrink-0 backdrop-blur">
+                <svg class="w-5 h-5 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M3 9a3 3 0 0 0 0 6v3a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-3a3 3 0 0 1 0-6V6a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2z"/>
+                </svg>
+              </span>
+              <div>
+                <div class="text-[10px] font-bold uppercase tracking-widest text-brand-100">E-Ticket Resmi</div>
+                <div class="text-sm font-bold text-white mt-0.5">Tixora — Platform Tiket Event</div>
+              </div>
+            </div>
+            <span class="inline-flex items-center gap-1.5 text-[11px] font-bold px-3 py-1.5 rounded-full bg-emerald-500/30 border border-emerald-500/50 text-emerald-100 backdrop-blur">
+              <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M5 13l4 4L19 7"/></svg>
+              Terverifikasi
+            </span>
+          </div>
+        </div>
+
+        <!-- Ticket body -->
+        <div class="p-6 sm:p-8">
+
+          <!-- Event info + QR grid -->
+          <div class="grid sm:grid-cols-[1fr_auto] gap-6 sm:gap-8 items-start">
+
+            <!-- Kiri: Event Info -->
+            <div class="space-y-4 min-w-0">
+              <div>
+                <div class="text-[10px] font-bold uppercase tracking-widest text-slate-400 mb-1">Nama Event</div>
+                <h2 class="text-xl sm:text-2xl font-extrabold leading-tight">
+                  Neon Nights Music Festival 2025
+                </h2>
+                <div class="mt-2 flex flex-wrap items-center gap-2">
+                  <span class="text-xs font-bold px-2.5 py-1 rounded-full bg-brand-600/40 border border-brand-500/50 text-brand-100">🎵 Musik</span>
+                  <span class="text-xs font-bold px-2.5 py-1 rounded-full bg-rose-500/20 border border-rose-500/40 text-rose-200">Regular Ticket</span>
+                </div>
+              </div>
+
+              <div class="grid grid-cols-2 gap-4">
+                <div>
+                  <div class="text-[10px] font-bold uppercase tracking-widest text-slate-400 mb-1">Tanggal</div>
+                  <div class="text-sm font-bold text-white">Sabtu, 24 Nov 2025</div>
+                </div>
+                <div>
+                  <div class="text-[10px] font-bold uppercase tracking-widest text-slate-400 mb-1">Waktu</div>
+                  <div class="text-sm font-bold text-white">19:00 – 23:00 WIB</div>
+                </div>
+                <div class="col-span-2">
+                  <div class="text-[10px] font-bold uppercase tracking-widest text-slate-400 mb-1">Lokasi</div>
+                  <div class="text-sm font-bold text-white">Jakarta Convention Center</div>
+                  <div class="text-xs text-slate-400 mt-0.5">Jl. Gatot Subroto, Senayan, Jakarta Pusat</div>
+                </div>
+                <div>
+                  <div class="text-[10px] font-bold uppercase tracking-widest text-slate-400 mb-1">Nama Pemesan</div>
+                  <div class="text-sm font-bold text-white truncate">Andi Pratama</div>
+                </div>
+                <div>
+                  <div class="text-[10px] font-bold uppercase tracking-widest text-slate-400 mb-1">No. Handphone</div>
+                  <div class="text-sm font-bold text-white">0812 3456 7890</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Kanan: QR Code -->
+            <div class="mx-auto sm:mx-0 text-center flex-shrink-0">
+              <div class="relative p-3 rounded-2xl bg-white shadow-glow">
+                <!-- QR Code (pakai gambar QR publik) -->
+                <img src="https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=TX-2025-1124-0842-NEONNIGHTS&color=0b1020&bgcolor=ffffff"
+                     alt="QR Code E-Ticket"
+                     class="w-40 h-40 sm:w-44 sm:h-44 rounded-lg" />
+                <!-- Overlay verify badge -->
+                <div class="absolute -bottom-2 left-1/2 -translate-x-1/2 px-3 py-1 rounded-full bg-emerald-500 text-white text-[10px] font-extrabold uppercase tracking-widest shadow-lg whitespace-nowrap">
+                  ✓ Valid E-Ticket
+                </div>
+              </div>
+              <div class="mt-5 text-[10px] font-bold uppercase tracking-widest text-slate-400">Kode Tiket</div>
+              <div class="mt-1 text-xs font-mono font-bold text-white tracking-wider">TX-2025-1124-0842</div>
+            </div>
+          </div>
+
+          <!-- Dashed separator (ticket stub) -->
+          <div class="my-6 sm:my-8 relative">
+            <div class="dashed-line"></div>
+          </div>
+
+          <!-- Barcode-ish strip -->
+          <div class="flex items-center justify-between gap-4 flex-wrap">
+            <div class="flex items-end gap-0.5 h-10 overflow-hidden">
+              <span class="w-1 h-full bg-white/80"></span>
+              <span class="w-0.5 h-full bg-white/40"></span>
+              <span class="w-1.5 h-full bg-white/80"></span>
+              <span class="w-0.5 h-full bg-white/30"></span>
+              <span class="w-1 h-full bg-white/70"></span>
+              <span class="w-0.5 h-full bg-white/40"></span>
+              <span class="w-1 h-full bg-white/80"></span>
+              <span class="w-1.5 h-full bg-white/30"></span>
+              <span class="w-0.5 h-full bg-white/70"></span>
+              <span class="w-1 h-full bg-white/80"></span>
+              <span class="w-0.5 h-full bg-white/40"></span>
+              <span class="w-1.5 h-full bg-white/80"></span>
+              <span class="w-0.5 h-full bg-white/30"></span>
+              <span class="w-1 h-full bg-white/70"></span>
+              <span class="w-0.5 h-full bg-white/40"></span>
+              <span class="w-1 h-full bg-white/80"></span>
+              <span class="w-1.5 h-full bg-white/30"></span>
+              <span class="w-0.5 h-full bg-white/70"></span>
+              <span class="w-1 h-full bg-white/80"></span>
+              <span class="w-0.5 h-full bg-white/40"></span>
+              <span class="w-1.5 h-full bg-white/80"></span>
+              <span class="w-0.5 h-full bg-white/30"></span>
+            </div>
+            <div class="text-right">
+              <div class="text-[10px] font-bold uppercase tracking-widest text-slate-400">Diterbitkan</div>
+              <div class="text-xs font-bold text-white">24 Sep 2026, 14:32 WIB</div>
+            </div>
+          </div>
+
+          <!-- Action buttons -->
+          <div class="mt-6 pt-6 border-t border-white/10 flex flex-col sm:flex-row gap-3">
+            <button id="downloadTicket" class="flex-1 py-3 rounded-xl bg-gradient-to-r from-brand-500 to-fuchsia-500 text-white font-bold shadow-glow hover:scale-[1.02] transition text-sm inline-flex items-center justify-center gap-2">
+              <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M7 10l5 5 5-5"/><path d="M12 15V3"/>
+              </svg>
+              Unduh E-Ticket
+            </button>
+            <button id="printTicket" class="flex-1 py-3 rounded-xl border border-white/15 bg-white/5 hover:bg-white/10 font-semibold text-sm transition inline-flex items-center justify-center gap-2">
+              <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M6 9V2h12v7"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><path d="M6 14h12v8H6z"/>
+              </svg>
+              Cetak Tiket
+            </button>
+            <button id="shareTicket" class="flex-1 py-3 rounded-xl border border-white/15 bg-white/5 hover:bg-white/10 font-semibold text-sm transition inline-flex items-center justify-center gap-2">
+              <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/>
+                <path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4"/>
+              </svg>
+              Bagikan
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===== DETAIL PEMBAYARAN ===== -->
+      <div class="mt-6 glass bg-white/5 border border-white/10 rounded-3xl p-6 sm:p-8 shadow-soft animate-fade-up" style="animation-delay: .2s">
+        <h2 class="text-lg font-bold flex items-center gap-2 mb-5">
+          <span class="w-1 h-5 rounded-full bg-gradient-to-b from-brand-500 to-fuchsia-500"></span>
+          Detail Pembayaran
+        </h2>
+
+        <div class="space-y-3 text-sm">
+          <div class="flex items-center justify-between">
+            <span class="text-slate-400">Kategori Tiket</span>
+            <span class="font-semibold text-white">Regular Ticket × 1</span>
+          </div>
+          <div class="flex items-center justify-between">
+            <span class="text-slate-400">Harga Tiket</span>
+            <span class="font-semibold text-white">Rp 250.000</span>
+          </div>
+          <div class="flex items-center justify-between">
+            <span class="text-slate-400">Diskon Promo Early Bird</span>
+            <span class="font-semibold text-emerald-300">- Rp 100.000</span>
+          </div>
+          <div class="flex items-center justify-between">
+            <span class="text-slate-400">Biaya Layanan</span>
+            <span class="font-semibold text-white">Rp 5.000</span>
+          </div>
+
+          <div class="flex items-center justify-between pt-3 mt-3 border-t border-white/10">
+            <span class="text-slate-200 font-semibold">Total Dibayar</span>
+            <span class="text-lg font-extrabold text-gradient">Rp 155.000</span>
+          </div>
+
+          <div class="flex items-center justify-between pt-3 mt-3 border-t border-white/10">
+            <span class="text-slate-400">Metode Pembayaran</span>
+            <span class="font-semibold text-white inline-flex items-center gap-2">
+              <svg class="w-4 h-4 text-emerald-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/>
+              </svg>
+              BCA Virtual Account
+            </span>
+          </div>
+          <div class="flex items-center justify-between">
+            <span class="text-slate-400">Status</span>
+            <span class="inline-flex items-center gap-1.5 text-xs font-bold px-2.5 py-1 rounded-full bg-emerald-500/20 border border-emerald-500/40 text-emerald-200">
+              <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+              Lunas
+            </span>
+          </div>
+          <div class="flex items-center justify-between">
+            <span class="text-slate-400">Waktu Pembayaran</span>
+            <span class="font-semibold text-white">24 Sep 2026, 14:30 WIB</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===== LANGKAH SELANJUTNYA ===== -->
+      <div class="mt-6 glass bg-white/5 border border-white/10 rounded-3xl p-6 sm:p-8 shadow-soft animate-fade-up" style="animation-delay: .3s">
+        <h2 class="text-lg font-bold flex items-center gap-2 mb-5">
+          <span class="w-1 h-5 rounded-full bg-gradient-to-b from-brand-500 to-fuchsia-500"></span>
+          Langkah Selanjutnya
+        </h2>
+
+        <div class="space-y-3">
+          <div class="flex items-start gap-4 p-4 rounded-2xl bg-white/5 border border-white/10">
+            <span class="w-9 h-9 rounded-xl bg-brand-600/25 border border-brand-500/40 grid place-items-center flex-shrink-0 text-brand-100 font-extrabold text-sm">1</span>
+            <div>
+              <div class="text-sm font-bold text-white">Simpan E-Ticket</div>
+              <div class="text-xs text-slate-400 mt-0.5 leading-relaxed">
+                E-Ticket juga dikirim ke email <span class="text-slate-300 font-semibold">andi.pratama@email.com</span>. Unduh dan simpan untuk ditunjukkan saat masuk venue.
+              </div>
+            </div>
+          </div>
+          <div class="flex items-start gap-4 p-4 rounded-2xl bg-white/5 border border-white/10">
+            <span class="w-9 h-9 rounded-xl bg-fuchsia-600/25 border border-fuchsia-500/40 grid place-items-center flex-shrink-0 text-fuchsia-200 font-extrabold text-sm">2</span>
+            <div>
+              <div class="text-sm font-bold text-white">Tunjukkan QR Code</div>
+              <div class="text-xs text-slate-400 mt-0.5 leading-relaxed">
+                Saat masuk venue, tunjukkan QR Code pada halaman ini atau di E-Ticket untuk di-scan oleh petugas.
+              </div>
+            </div>
+          </div>
+          <div class="flex items-start gap-4 p-4 rounded-2xl bg-white/5 border border-white/10">
+            <span class="w-9 h-9 rounded-xl bg-emerald-600/25 border border-emerald-500/40 grid place-items-center flex-shrink-0 text-emerald-200 font-extrabold text-sm">3</span>
+            <div>
+              <div class="text-sm font-bold text-white">Klaim Sertifikat</div>
+              <div class="text-xs text-slate-400 mt-0.5 leading-relaxed">
+                Setelah event selesai, E-Sertifikat akan dikirim ke email kamu dalam <span class="text-slate-300 font-semibold">H+2</span>.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Info reminder -->
+        <div class="mt-5 flex items-start gap-3 p-3.5 rounded-2xl bg-amber-500/10 border border-amber-500/30">
+          <svg class="w-4 h-4 text-amber-200 flex-shrink-0 mt-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 9v4M12 17h.01"/><circle cx="12" cy="12" r="9"/>
+          </svg>
+          <p class="text-xs text-amber-100/90 leading-relaxed">
+            Jangan bagikan QR Code atau kode tiket kepada siapa pun. Tiket berlaku untuk 1 orang dan hanya bisa discan sekali.
+          </p>
+        </div>
+      </div>
+
+      <!-- ===== BUTTONS AKSI ===== -->
+      <div class="mt-8 grid grid-cols-1 sm:grid-cols-2 gap-3 animate-fade-up" style="animation-delay: .4s">
+        <a href="#" class="py-4 rounded-2xl bg-gradient-to-r from-brand-500 to-fuchsia-500 text-white font-bold shadow-glow hover:scale-[1.02] transition inline-flex items-center justify-center gap-2">
+          <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 9a3 3 0 0 0 0 6v3a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-3a3 3 0 0 1 0-6V6a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2z"/>
+          </svg>
+          Lihat Tiket Saya
+        </a>
+        <a href="#" class="py-4 rounded-2xl border border-white/15 bg-white/5 hover:bg-white/10 font-semibold transition inline-flex items-center justify-center gap-2">
+          <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 12a9 9 0 1 1-9-9"/><path d="M21 3v6h-6"/>
+          </svg>
+          Jelajahi Event Lain
+        </a>
+      </div>
+
+      <!-- ===== EVENT LAINNYA ===== -->
+      <section class="mt-16 md:mt-20 animate-fade-up" style="animation-delay: .5s">
+        <div class="flex items-end justify-between gap-4 mb-6">
+          <div>
+            <span class="inline-block text-xs font-bold tracking-widest uppercase text-brand-100 bg-brand-600/30 border border-brand-500/40 px-3 py-1 rounded-full">
+              Rekomendasi
+            </span>
+            <h2 class="mt-3 text-xl sm:text-2xl font-extrabold tracking-tight">
+              Event <span class="text-gradient">Lainnya</span> Untukmu
+            </h2>
+          </div>
+          <a href="#" class="hidden sm:inline-flex items-center gap-2 text-sm font-semibold text-brand-100 hover:text-white transition">
+            Lihat semua
+            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </a>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <a href="#" class="group glass bg-white/5 border border-white/10 rounded-3xl overflow-hidden hover:border-emerald-500/50 hover:-translate-y-1 transition duration-300 shadow-soft flex">
+            <div class="relative w-28 flex-shrink-0 overflow-hidden">
+              <img src="https://images.unsplash.com/photo-1540575467063-178a50c2df87?auto=format&fit=crop&w=400&q=80" alt="Tech Innovation Summit" class="w-full h-full object-cover group-hover:scale-110 transition duration-700" />
+            </div>
+            <div class="p-4 flex-1 min-w-0">
+              <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-500/90 text-white">💡 Seminar</span>
+              <h3 class="mt-2 font-bold text-sm group-hover:text-emerald-100 transition line-clamp-2">Tech Innovation Summit 2025</h3>
+              <div class="mt-2 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-slate-400">
+                <span class="inline-flex items-center gap-1">📅 2 Des 2025</span>
+                <span class="inline-flex items-center gap-1">📍 Jakarta</span>
+              </div>
+              <div class="mt-3 flex items-center justify-between">
+                <span class="text-sm font-bold text-gradient">Rp 150K</span>
+                <span class="text-xs font-semibold text-brand-100">Detail →</span>
+              </div>
+            </div>
+          </a>
+
+          <a href="#" class="group glass bg-white/5 border border-white/10 rounded-3xl overflow-hidden hover:border-fuchsia-500/50 hover:-translate-y-1 transition duration-300 shadow-soft flex">
+            <div class="relative w-28 flex-shrink-0 overflow-hidden">
+              <img src="https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=400&q=80" alt="Art & Culture" class="w-full h-full object-cover group-hover:scale-110 transition duration-700" />
+            </div>
+            <div class="p-4 flex-1 min-w-0">
+              <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-fuchsia-500/90 text-white">🎨 Seni</span>
+              <h3 class="mt-2 font-bold text-sm group-hover:text-fuchsia-100 transition line-clamp-2">Art & Culture Festival</h3>
+              <div class="mt-2 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-slate-400">
+                <span class="inline-flex items-center gap-1">📅 15 Des 2025</span>
+                <span class="inline-flex items-center gap-1">📍 Yogyakarta</span>
+              </div>
+              <div class="mt-3 flex items-center justify-between">
+                <span class="text-sm font-bold text-gradient">Rp 100K</span>
+                <span class="text-xs font-semibold text-brand-100">Detail →</span>
+              </div>
+            </div>
+          </a>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="border-t border-white/10 py-10 px-4">
+    <div class="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
+      <div class="flex items-center gap-2">
+        <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-brand-500 to-fuchsia-500 grid place-items-center">
+          <svg class="w-4 h-4 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 9a3 3 0 0 0 0 6v3a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-3a3 3 0 0 1 0-6V6a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2z"/>
+          </svg>
+        </div>
+        <span class="font-extrabold">Tix<span class="text-gradient">ora</span></span>
+      </div>
+      <p class="text-sm text-slate-400 text-center">© 2025 Tixora. Semua hak dilindungi.</p>
+      <div class="flex items-center gap-4 text-slate-400">
+        <a href="#" class="hover:text-white transition">Instagram</a>
+        <a href="#" class="hover:text-white transition">Twitter</a>
+        <a href="#" class="hover:text-white transition">TikTok</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ===== TOAST ===== -->
+  <div id="toast" class="fixed bottom-6 left-1/2 -translate-x-1/2 z-[70] hidden">
+    <div class="glass bg-emerald-500/15 border border-emerald-500/40 rounded-2xl px-5 py-4 shadow-glow flex items-center gap-3 min-w-[280px] max-w-[90vw]">
+      <span class="w-9 h-9 rounded-xl bg-emerald-500/30 border border-emerald-500/50 grid place-items-center flex-shrink-0">
+        <svg class="w-5 h-5 text-emerald-200" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"/></svg>
+      </span>
+      <div>
+        <div class="font-bold text-sm text-white" id="toastTitle">Berhasil!</div>
+        <div class="text-xs text-emerald-100/90" id="toastMsg">Tindakan berhasil.</div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    /* ========== Toast helper ========== */
+    const toast = document.getElementById('toast');
+    const toastTitle = document.getElementById('toastTitle');
+    const toastMsg = document.getElementById('toastMsg');
+
+    function showToast(title, msg) {
+      toastTitle.textContent = title;
+      toastMsg.textContent = msg;
+      toast.classList.remove('hidden');
+      toast.classList.add('animate-fade-in');
+      setTimeout(() => {
+        toast.classList.add('hidden');
+        toast.classList.remove('animate-fade-in');
+      }, 3000);
+    }
+
+    /* ========== Copy Order ID ========== */
+    document.getElementById('copyOrderId').addEventListener('click', async () => {
+      try {
+        await navigator.clipboard.writeText('TX-2025-1124-0842');
+        showToast('Kode Disalin!', 'Kode order berhasil disalin ke clipboard.');
+      } catch (e) {
+        showToast('Gagal Menyalin', 'Silakan salin manual kode order.');
+      }
+    });
+
+    /* ========== Download E-Ticket ========== */
+    document.getElementById('downloadTicket').addEventListener('click', () => {
+      showToast('Mengunduh E-Ticket', 'File PDF sedang diunduh...');
+      // Simulasi: window.location.href = '/download/ticket/TX-2025-1124-0842';
+    });
+
+    /* ========== Print ========== */
+    document.getElementById('printTicket').addEventListener('click', () => {
+      showToast('Menyiapkan Cetak', 'Dialog cetak akan segera muncul.');
+      setTimeout(() => window.print(), 400);
+    });
+
+    /* ========== Share ========== */
+    document.getElementById('shareTicket').addEventListener('click', async () => {
+      const shareData = {
+        title: 'Neon Nights Music Festival 2025',
+        text: 'Aku baru saja mendaftar di Neon Nights Music Festival 2025 di Tixora!',
+        url: window.location.href
+      };
+      try {
+        if (navigator.share) {
+          await navigator.share(shareData);
+        } else {
+          await navigator.clipboard.writeText(window.location.href);
+          showToast('Link Disalin!', 'Bagikan link event ke temanmu.');
+        }
+      } catch (e) { /* user cancelled */ }
+    });
+
+    /* ========== Auto scroll-to-top saat load ========== */
+    window.addEventListener('load', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+  </script>
+
+</body>
+</html>

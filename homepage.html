@@ -1,0 +1,747 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tixora — Temukan Event Terbaik</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: { sans: ['Plus Jakarta Sans', 'sans-serif'] },
+          colors: {
+            brand: { 50:'#eef2ff',100:'#e0e7ff',500:'#6366f1',600:'#4f46e5',700:'#4338ca' },
+            ink: '#0b1020'
+          },
+          boxShadow: {
+            glow: '0 20px 60px -20px rgba(99,102,241,.55)',
+            soft: '0 10px 40px -12px rgba(15,23,42,.15)'
+          },
+          animation: {
+            'fade-up': 'fadeUp .8s ease-out both',
+          },
+          keyframes: {
+            fadeUp: {
+              '0%': { opacity: 0, transform: 'translateY(20px)' },
+              '100%': { opacity: 1, transform: 'translateY(0)' },
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    .glass { backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); }
+    .text-gradient {
+      background: linear-gradient(90deg,#818cf8,#c084fc,#f472b6);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+    .mesh {
+      background:
+        radial-gradient(60% 60% at 15% 10%, rgba(99,102,241,.35) 0%, transparent 60%),
+        radial-gradient(50% 50% at 85% 20%, rgba(192,132,252,.30) 0%, transparent 60%),
+        radial-gradient(60% 60% at 50% 100%, rgba(244,114,182,.22) 0%, transparent 60%);
+    }
+    .line-clamp-1 { display:-webkit-box;-webkit-line-clamp:1;-webkit-box-orient:vertical;overflow:hidden; }
+    .line-clamp-2 { display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden; }
+
+    /* Search input reset */
+    .search-input::-webkit-search-cancel-button { -webkit-appearance: none; }
+    .search-input:focus { outline: none; }
+  </style>
+</head>
+
+<body class="bg-ink text-slate-100 font-sans antialiased overflow-x-hidden">
+
+  <!-- Background Decor -->
+  <div class="fixed inset-0 mesh pointer-events-none -z-10"></div>
+  <div class="fixed top-[-10%] left-[-10%] w-[500px] h-[500px] bg-brand-600/20 blur-[120px] rounded-full -z-10"></div>
+  <div class="fixed bottom-[-10%] right-[-10%] w-[500px] h-[500px] bg-fuchsia-500/20 blur-[120px] rounded-full -z-10"></div>
+
+  <!-- ===== NAVBAR MELAYANG ===== -->
+  <header class="fixed top-4 left-0 right-0 z-50 px-4">
+    <nav class="glass mx-auto max-w-7xl bg-white/5 border border-white/10 rounded-2xl shadow-soft">
+      <div class="px-3 sm:px-5">
+        <div class="flex items-center gap-3 h-16">
+
+          <!-- Logo -->
+          <a href="#" class="flex items-center gap-2 group flex-shrink-0">
+            <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-brand-500 to-fuchsia-500 grid place-items-center shadow-glow group-hover:scale-105 transition">
+              <svg class="w-5 h-5 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M3 9a3 3 0 0 0 0 6v3a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-3a3 3 0 0 1 0-6V6a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2z"/>
+              </svg>
+            </div>
+            <span class="text-lg font-extrabold tracking-tight hidden sm:inline">Tix<span class="text-gradient">ora</span></span>
+          </a>
+
+          <!-- ===== SEARCH FORM (DESKTOP) ===== -->
+          <form action="#" method="GET" role="search"
+                class="hidden lg:flex flex-1 max-w-xl mx-auto relative group">
+            <!-- Icon -->
+            <span class="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-brand-100 transition pointer-events-none">
+              <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/>
+              </svg>
+            </span>
+            <!-- Input -->
+            <input
+              type="search"
+              name="q"
+              id="searchDesktop"
+              placeholder="Cari event, kota, atau kategori..."
+              class="search-input w-full pl-10 pr-24 py-2.5 rounded-xl bg-white/5 border border-white/10 text-sm text-white placeholder:text-slate-400
+                     focus:bg-white/10 focus:border-brand-500/60 focus:ring-2 focus:ring-brand-500/25 transition" />
+            <!-- Kbd hint -->
+            <kbd class="hidden xl:inline-flex absolute right-3 top-1/2 -translate-y-1/2 items-center gap-1 px-2 py-1 rounded-md bg-white/5 border border-white/10 text-[10px] font-semibold text-slate-400 pointer-events-none">
+              <span>⌘</span>K
+            </kbd>
+          </form>
+
+          <!-- Menu Desktop -->
+          <ul class="hidden md:flex items-center gap-0.5 text-sm font-medium flex-shrink-0">
+            <li><a href="#home" class="px-3 py-2 rounded-xl text-slate-200 hover:text-white hover:bg-white/10 transition">Home</a></li>
+            <li><a href="#about" class="px-3 py-2 rounded-xl text-slate-200 hover:text-white hover:bg-white/10 transition">Tentang</a></li>
+            <li><a href="#events" class="px-3 py-2 rounded-xl text-slate-200 hover:text-white hover:bg-white/10 transition">Event</a></li>
+            <li><a href="#contact" class="px-3 py-2 rounded-xl text-slate-200 hover:text-white hover:bg-white/10 transition">Kontak</a></li>
+          </ul>
+
+          <!-- CTA + Search icon (mobile) -->
+          <div class="hidden md:flex items-center gap-2 flex-shrink-0">
+            <a href="#" class="text-sm font-semibold px-3 py-2 rounded-xl text-slate-200 hover:text-white transition">Masuk</a>
+            <a href="#" class="text-sm font-semibold px-4 py-2 rounded-xl bg-gradient-to-r from-brand-500 to-fuchsia-500 text-white shadow-glow hover:shadow-lg hover:scale-[1.03] transition whitespace-nowrap">
+              Daftar
+            </a>
+          </div>
+
+          <!-- Mobile: Search icon button -->
+          <button id="mobileSearchBtn" class="md:hidden ml-auto inline-flex items-center justify-center w-10 h-10 rounded-xl border border-white/10 hover:bg-white/10 transition" aria-label="Cari">
+            <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/>
+            </svg>
+          </button>
+
+          <!-- Burger -->
+          <button id="burger" class="md:hidden inline-flex items-center justify-center w-10 h-10 rounded-xl border border-white/10 hover:bg-white/10 transition" aria-label="Menu">
+            <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+              <path d="M4 7h16M4 12h16M4 17h16"/>
+            </svg>
+          </button>
+        </div>
+
+        <!-- ===== SEARCH FORM (MOBILE) — muncul saat ikon search diklik ===== -->
+        <div id="mobileSearchWrap" class="md:hidden hidden pb-3">
+          <form action="#" method="GET" role="search" class="relative group">
+            <span class="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-brand-100 transition pointer-events-none">
+              <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/>
+              </svg>
+            </span>
+            <input type="search" name="q" placeholder="Cari event, kota, kategori..."
+              class="search-input w-full pl-10 pr-4 py-3 rounded-xl bg-white/5 border border-white/10 text-sm text-white placeholder:text-slate-400
+                     focus:bg-white/10 focus:border-brand-500/60 focus:ring-2 focus:ring-brand-500/25 transition" />
+          </form>
+        </div>
+
+        <!-- Mobile Menu -->
+        <div id="mobileMenu" class="md:hidden hidden pb-4">
+          <div class="flex flex-col gap-1 pt-2 border-t border-white/10">
+            <a href="#home" class="px-4 py-3 rounded-xl hover:bg-white/10 transition">Home</a>
+            <a href="#about" class="px-4 py-3 rounded-xl hover:bg-white/10 transition">Tentang</a>
+            <a href="#events" class="px-4 py-3 rounded-xl hover:bg-white/10 transition">Event</a>
+            <a href="#contact" class="px-4 py-3 rounded-xl hover:bg-white/10 transition">Kontak</a>
+            <a href="#" class="mt-2 text-center font-semibold px-4 py-3 rounded-xl bg-gradient-to-r from-brand-500 to-fuchsia-500 text-white shadow-glow">
+              Daftar Sekarang
+            </a>
+          </div>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <!-- ===== HERO ===== -->
+  <section id="home" class="relative pt-40 pb-20 md:pt-48 md:pb-28 px-4">
+    <div class="max-w-6xl mx-auto text-center">
+      <span class="inline-flex items-center gap-2 text-xs sm:text-sm font-semibold px-4 py-2 rounded-full bg-white/5 border border-white/10 text-slate-200 animate-fade-up">
+        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+        Platform Tiket Event #1 di Indonesia
+      </span>
+
+      <h1 class="mt-6 text-4xl sm:text-5xl md:text-7xl font-extrabold leading-[1.05] tracking-tight animate-fade-up">
+        Temukan & Pesan Tiket<br class="hidden sm:block" />
+        <span class="text-gradient">Event Impianmu</span> dalam Sekejap
+      </h1>
+
+      <p class="mt-6 max-w-2xl mx-auto text-slate-300/90 text-base sm:text-lg leading-relaxed animate-fade-up">
+        Dari konser musik, seminar bisnis, hingga festival budaya — ribuan event tersedia dengan proses pemesanan yang cepat, aman, dan tanpa ribet.
+      </p>
+
+      <!-- Hero Search (bonus) -->
+      <form action="#" method="GET" role="search"
+            class="mt-10 max-w-xl mx-auto relative animate-fade-up">
+        <span class="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400">
+          <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/>
+          </svg>
+        </span>
+        <input type="search" name="q" placeholder="Mau nonton apa hari ini?"
+          class="search-input w-full pl-12 pr-32 py-4 rounded-2xl glass bg-white/5 border border-white/10 text-sm sm:text-base text-white placeholder:text-slate-400
+                 focus:bg-white/10 focus:border-brand-500/60 focus:ring-2 focus:ring-brand-500/25 transition" />
+        <button type="submit"
+          class="absolute right-2 top-1/2 -translate-y-1/2 px-5 py-2.5 rounded-xl bg-gradient-to-r from-brand-500 to-fuchsia-500 text-white text-sm font-semibold shadow-glow hover:scale-105 transition">
+          Cari
+        </button>
+      </form>
+
+      <div class="mt-16 grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 animate-fade-up">
+        <div class="glass bg-white/5 border border-white/10 rounded-2xl p-5">
+          <div class="text-2xl sm:text-3xl font-extrabold text-gradient">2.5K+</div>
+          <div class="text-xs sm:text-sm text-slate-300 mt-1">Event Aktif</div>
+        </div>
+        <div class="glass bg-white/5 border border-white/10 rounded-2xl p-5">
+          <div class="text-2xl sm:text-3xl font-extrabold text-gradient">1.2M</div>
+          <div class="text-xs sm:text-sm text-slate-300 mt-1">Tiket Terjual</div>
+        </div>
+        <div class="glass bg-white/5 border border-white/10 rounded-2xl p-5">
+          <div class="text-2xl sm:text-3xl font-extrabold text-gradient">120+</div>
+          <div class="text-xs sm:text-sm text-slate-300 mt-1">Kota Jangkauan</div>
+        </div>
+        <div class="glass bg-white/5 border border-white/10 rounded-2xl p-5">
+          <div class="text-2xl sm:text-3xl font-extrabold text-gradient">4.9★</div>
+          <div class="text-xs sm:text-sm text-slate-300 mt-1">Rating Pengguna</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== ABOUT ===== -->
+  <section id="about" class="relative py-20 md:py-28 px-4">
+    <div class="max-w-6xl mx-auto grid lg:grid-cols-2 gap-12 items-center">
+      <div class="relative order-2 lg:order-1">
+        <div class="absolute -inset-4 bg-gradient-to-tr from-brand-600/30 to-fuchsia-500/30 blur-3xl rounded-full"></div>
+        <div class="relative glass bg-white/5 border border-white/10 rounded-3xl p-6 sm:p-8 shadow-soft">
+          <div class="grid grid-cols-2 gap-4">
+            <div class="col-span-2 h-40 rounded-2xl bg-gradient-to-br from-brand-500 to-brand-700 p-5 flex flex-col justify-between">
+              <svg class="w-8 h-8 text-white/90" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/>
+              </svg>
+              <div class="text-white text-sm font-semibold">Kelola Event</div>
+            </div>
+            <div class="h-32 rounded-2xl bg-gradient-to-br from-fuchsia-500 to-pink-600 p-4 flex flex-col justify-between">
+              <svg class="w-6 h-6 text-white/90" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                <path d="M20 12V8H6a2 2 0 0 1 0-4h12v4"/><path d="M4 6v12a2 2 0 0 0 2 2h14v-4"/><path d="M18 12a2 2 0 0 0 0 4h4v-4z"/>
+              </svg>
+              <div class="text-white text-xs font-semibold">Pembayaran Aman</div>
+            </div>
+            <div class="h-32 rounded-2xl bg-gradient-to-br from-emerald-500 to-teal-600 p-4 flex flex-col justify-between">
+              <svg class="w-6 h-6 text-white/90" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                <path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>
+              </svg>
+              <div class="text-white text-xs font-semibold">E-Ticket Instan</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="order-1 lg:order-2">
+        <span class="inline-block text-xs font-bold tracking-widest uppercase text-brand-100 bg-brand-600/30 border border-brand-500/40 px-3 py-1 rounded-full">
+          Tentang Kami
+        </span>
+        <h2 class="mt-5 text-3xl sm:text-4xl md:text-5xl font-extrabold leading-tight tracking-tight">
+          Kami Menghubungkan <span class="text-gradient">Penonton</span> dengan Event Terbaik
+        </h2>
+        <p class="mt-6 text-slate-300/90 leading-relaxed">
+          <span class="font-semibold text-white">Tixora</span> adalah platform penyedia tiket event terpercaya yang menghubungkan penyelenggara, promotor, dan penggemar di seluruh Indonesia.
+        </p>
+        <p class="mt-4 text-slate-300/90 leading-relaxed">
+          Sejak berdiri, kami telah membantu ribuan event mulai dari konser musik, workshop kreatif, seminar teknologi, hingga festival budaya.
+        </p>
+
+        <ul class="mt-8 space-y-3">
+          <li class="flex items-start gap-3">
+            <span class="mt-1 w-6 h-6 rounded-lg bg-brand-600/30 border border-brand-500/40 grid place-items-center flex-shrink-0">
+              <svg class="w-3.5 h-3.5 text-brand-100" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M5 13l4 4L19 7"/></svg>
+            </span>
+            <span class="text-slate-200">Verifikasi penyelenggara resmi & terpercaya</span>
+          </li>
+          <li class="flex items-start gap-3">
+            <span class="mt-1 w-6 h-6 rounded-lg bg-brand-600/30 border border-brand-500/40 grid place-items-center flex-shrink-0">
+              <svg class="w-3.5 h-3.5 text-brand-100" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M5 13l4 4L19 7"/></svg>
+            </span>
+            <span class="text-slate-200">Pembayaran terlindungi dengan enkripsi berlapis</span>
+          </li>
+          <li class="flex items-start gap-3">
+            <span class="mt-1 w-6 h-6 rounded-lg bg-brand-600/30 border border-brand-500/40 grid place-items-center flex-shrink-0">
+              <svg class="w-3.5 h-3.5 text-brand-100" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M5 13l4 4L19 7"/></svg>
+            </span>
+            <span class="text-slate-200">Refund & customer support 24/7</span>
+          </li>
+        </ul>
+
+        <a href="#events" class="inline-flex items-center gap-2 mt-10 font-semibold text-white group">
+          Lihat Event Populer
+          <span class="w-8 h-8 rounded-full bg-gradient-to-r from-brand-500 to-fuchsia-500 grid place-items-center group-hover:translate-x-1 transition">
+            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== EVENT CARDS ===== -->
+  <section id="events" class="relative py-20 md:py-28 px-4">
+    <div class="max-w-6xl mx-auto">
+
+      <!-- Header -->
+      <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-12">
+        <div>
+          <span class="inline-block text-xs font-bold tracking-widest uppercase text-brand-100 bg-brand-600/30 border border-brand-500/40 px-3 py-1 rounded-full">
+            Event Pilihan
+          </span>
+          <h2 class="mt-5 text-3xl sm:text-4xl md:text-5xl font-extrabold leading-tight tracking-tight">
+            Event <span class="text-gradient">Terpopuler</span> Minggu Ini
+          </h2>
+          <p class="mt-4 max-w-xl text-slate-300/90">
+            Jangan lewatkan kesempatan untuk hadir di event-event seru yang sedang trending.
+          </p>
+        </div>
+
+        <div class="flex flex-wrap gap-2">
+          <button class="px-4 py-2 rounded-xl text-sm font-semibold bg-gradient-to-r from-brand-500 to-fuchsia-500 text-white shadow-glow">Semua</button>
+          <button class="px-4 py-2 rounded-xl text-sm font-semibold bg-white/5 border border-white/10 hover:bg-white/10 transition">Musik</button>
+          <button class="px-4 py-2 rounded-xl text-sm font-semibold bg-white/5 border border-white/10 hover:bg-white/10 transition">Seminar</button>
+          <button class="px-4 py-2 rounded-xl text-sm font-semibold bg-white/5 border border-white/10 hover:bg-white/10 transition">Seni</button>
+        </div>
+      </div>
+
+      <!-- CARD GRID -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+
+        <!-- CARD 1 -->
+        <article class="group glass bg-white/5 border border-white/10 rounded-3xl overflow-hidden hover:border-brand-500/50 hover:-translate-y-2 transition duration-300 shadow-soft flex flex-col">
+          <div class="relative h-56 overflow-hidden">
+            <img src="https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?auto=format&fit=crop&w=800&q=80" alt="Flyer" class="w-full h-full object-cover group-hover:scale-110 transition duration-700" />
+            <div class="absolute inset-0 bg-gradient-to-t from-ink/95 via-ink/30 to-transparent"></div>
+            <span class="absolute top-4 left-4 text-xs font-bold px-3 py-1.5 rounded-full bg-brand-600/90 text-white backdrop-blur border border-white/20">🎵 Musik</span>
+            <span class="absolute top-4 right-4 text-xs font-bold px-3 py-1.5 rounded-full bg-white/95 text-ink">Rp 250K</span>
+            <span class="absolute bottom-4 right-4 text-[10px] font-bold px-2.5 py-1 rounded-full bg-emerald-500/95 text-white backdrop-blur inline-flex items-center gap-1">
+              <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M5 13l4 4L19 7"/></svg>
+              Sertifikat
+            </span>
+          </div>
+          <div class="p-6 flex flex-col flex-1">
+            <h3 class="text-lg font-bold leading-snug group-hover:text-brand-100 transition line-clamp-2">Neon Nights Music Festival 2025</h3>
+            <p class="mt-2 text-sm text-slate-300/80 line-clamp-2">Malam penuh energi dengan penampilan dari musisi ternama nasional dan internasional dalam satu panggung megah.</p>
+            <div class="my-4 border-t border-white/10"></div>
+            <ul class="space-y-2.5 text-sm">
+              <li class="flex items-center gap-2.5 text-slate-300">
+                <span class="w-7 h-7 rounded-lg bg-brand-600/25 border border-brand-500/30 grid place-items-center flex-shrink-0">
+                  <svg class="w-3.5 h-3.5 text-brand-100" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+                </span>
+                <span><span class="text-slate-400">Tanggal:</span> <span class="text-white font-semibold">Sabtu, 24 November 2025</span></span>
+              </li>
+              <li class="flex items-center gap-2.5 text-slate-300">
+                <span class="w-7 h-7 rounded-lg bg-fuchsia-600/25 border border-fuchsia-500/30 grid place-items-center flex-shrink-0">
+                  <svg class="w-3.5 h-3.5 text-fuchsia-200" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+                </span>
+                <span><span class="text-slate-400">Waktu:</span> <span class="text-white font-semibold">19:00 – 23:00 WIB</span></span>
+              </li>
+              <li class="flex items-center gap-2.5 text-slate-300">
+                <span class="w-7 h-7 rounded-lg bg-emerald-600/25 border border-emerald-500/30 grid place-items-center flex-shrink-0">
+                  <svg class="w-3.5 h-3.5 text-emerald-200" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 12-9 12s-9-5-9-12a9 9 0 1 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                </span>
+                <span class="line-clamp-1"><span class="text-slate-400">Lokasi:</span> <span class="text-white font-semibold">Jakarta Convention Center</span></span>
+              </li>
+              <li class="flex items-center gap-2.5 text-slate-300">
+                <span class="w-7 h-7 rounded-lg bg-amber-600/25 border border-amber-500/30 grid place-items-center flex-shrink-0">
+                  <svg class="w-3.5 h-3.5 text-amber-200" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="6"/><path d="M9 14l-2 8 5-3 5 3-2-8"/></svg>
+                </span>
+                <span><span class="text-slate-400">Sertifikat:</span> <span class="text-emerald-300 font-semibold">Tersedia (E-Sertifikat)</span></span>
+              </li>
+            </ul>
+            <div class="mt-6 pt-4 border-t border-white/10 flex items-center justify-between gap-3">
+              <div class="flex -space-x-2">
+                <div class="w-7 h-7 rounded-full bg-gradient-to-br from-brand-500 to-fuchsia-500 border-2 border-ink"></div>
+                <div class="w-7 h-7 rounded-full bg-gradient-to-br from-emerald-400 to-teal-500 border-2 border-ink"></div>
+                <div class="w-7 h-7 rounded-full bg-white/10 border-2 border-ink grid place-items-center text-[10px] font-bold">+2k</div>
+              </div>
+              <a href="#" class="inline-flex items-center gap-1.5 text-sm font-semibold px-4 py-2 rounded-xl bg-gradient-to-r from-brand-500 to-fuchsia-500 text-white shadow-glow hover:scale-105 transition">
+                Pesan Tiket
+                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+              </a>
+            </div>
+          </div>
+        </article>
+
+        <!-- CARD 2 -->
+        <article class="group glass bg-white/5 border border-white/10 rounded-3xl overflow-hidden hover:border-emerald-500/50 hover:-translate-y-2 transition duration-300 shadow-soft flex flex-col">
+          <div class="relative h-56 overflow-hidden">
+            <img src="https://images.unsplash.com/photo-1540575467063-178a50c2df87?auto=format&fit=crop&w=800&q=80" alt="Flyer" class="w-full h-full object-cover group-hover:scale-110 transition duration-700" />
+            <div class="absolute inset-0 bg-gradient-to-t from-ink/95 via-ink/30 to-transparent"></div>
+            <span class="absolute top-4 left-4 text-xs font-bold px-3 py-1.5 rounded-full bg-emerald-500/90 text-white backdrop-blur border border-white/20">💡 Seminar</span>
+            <span class="absolute top-4 right-4 text-xs font-bold px-3 py-1.5 rounded-full bg-white/95 text-ink">Rp 150K</span>
+            <span class="absolute bottom-4 right-4 text-[10px] font-bold px-2.5 py-1 rounded-full bg-emerald-500/95 text-white backdrop-blur inline-flex items-center gap-1">
+              <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M5 13l4 4L19 7"/></svg>
+              Sertifikat
+            </span>
+          </div>
+          <div class="p-6 flex flex-col flex-1">
+            <h3 class="text-lg font-bold leading-snug group-hover:text-emerald-100 transition line-clamp-2">Tech Innovation Summit 2025</h3>
+            <p class="mt-2 text-sm text-slate-300/80 line-clamp-2">Bertemu para pakar teknologi dan pelajari tren AI, Web3, dan masa depan transformasi digital.</p>
+            <div class="my-4 border-t border-white/10"></div>
+            <ul class="space-y-2.5 text-sm">
+              <li class="flex items-center gap-2.5 text-slate-300">
+                <span class="w-7 h-7 rounded-lg bg-brand-600/25 border border-brand-500/30 grid place-items-center flex-shrink-0">
+                  <svg class="w-3.5 h-3.5 text-brand-100" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+                </span>
+                <span><span class="text-slate-400">Tanggal:</span> <span class="text-white font-semibold">Selasa, 2 Desember 2025</span></span>
+              </li>
+              <li class="flex items-center gap-2.5 text-slate-300">
+                <span class="w-7 h-7 rounded-lg bg-fuchsia-600/25 border border-fuchsia-500/30 grid place-items-center flex-shrink-0">
+                  <svg class="w-3.5 h-3.5 text-fuchsia-200" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+                </span>
+                <span><span class="text-slate-400">Waktu:</span> <span class="text-white font-semibold">09:00 – 16:00 WIB</span></span>
+              </li>
+              <li class="flex items-center gap-2.5 text-slate-300">
+                <span class="w-7 h-7 rounded-lg bg-emerald-600/25 border border-emerald-500/30 grid place-items-center flex-shrink-0">
+                  <svg class="w-3.5 h-3.5 text-emerald-200" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 12-9 12s-9-5-9-12a9 9 0 1 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                </span>
+                <span class="line-clamp-1"><span class="text-slate-400">Lokasi:</span> <span class="text-white font-semibold">Hotel Mulia, Jakarta</span></span>
+              </li>
+              <li class="flex items-center gap-2.5 text-slate-300">
+                <span class="w-7 h-7 rounded-lg bg-amber-600/25 border border-amber-500/30 grid place-items-center flex-shrink-0">
+                  <svg class="w-3.5 h-3.5 text-amber-200" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="6"/><path d="M9 14l-2 8 5-3 5 3-2-8"/></svg>
+                </span>
+                <span><span class="text-slate-400">Sertifikat:</span> <span class="text-emerald-300 font-semibold">Tersedia (E-Sertifikat)</span></span>
+              </li>
+            </ul>
+            <div class="mt-6 pt-4 border-t border-white/10 flex items-center justify-between gap-3">
+              <div class="flex -space-x-2">
+                <div class="w-7 h-7 rounded-full bg-gradient-to-br from-blue-500 to-indigo-500 border-2 border-ink"></div>
+                <div class="w-7 h-7 rounded-full bg-gradient-to-br from-pink-400 to-rose-500 border-2 border-ink"></div>
+                <div class="w-7 h-7 rounded-full bg-white/10 border-2 border-ink grid place-items-center text-[10px] font-bold">+800</div>
+              </div>
+              <a href="#" class="inline-flex items-center gap-1.5 text-sm font-semibold px-4 py-2 rounded-xl bg-gradient-to-r from-brand-500 to-fuchsia-500 text-white shadow-glow hover:scale-105 transition">
+                Pesan Tiket
+                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+              </a>
+            </div>
+          </div>
+        </article>
+
+        <!-- CARD 3 -->
+        <article class="group glass bg-white/5 border border-white/10 rounded-3xl overflow-hidden hover:border-fuchsia-500/50 hover:-translate-y-2 transition duration-300 shadow-soft flex flex-col">
+          <div class="relative h-56 overflow-hidden">
+            <img src="https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=800&q=80" alt="Flyer" class="w-full h-full object-cover group-hover:scale-110 transition duration-700" />
+            <div class="absolute inset-0 bg-gradient-to-t from-ink/95 via-ink/30 to-transparent"></div>
+            <span class="absolute top-4 left-4 text-xs font-bold px-3 py-1.5 rounded-full bg-fuchsia-500/90 text-white backdrop-blur border border-white/20">🎨 Seni</span>
+            <span class="absolute top-4 right-4 text-xs font-bold px-3 py-1.5 rounded-full bg-white/95 text-ink">Rp 100K</span>
+            <span class="absolute bottom-4 right-4 text-[10px] font-bold px-2.5 py-1 rounded-full bg-slate-700/90 text-slate-200 backdrop-blur inline-flex items-center gap-1 border border-white/20">
+              <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+              Tanpa Sertifikat
+            </span>
+          </div>
+          <div class="p-6 flex flex-col flex-1">
+            <h3 class="text-lg font-bold leading-snug group-hover:text-fuchsia-100 transition line-clamp-2">Art & Culture Festival</h3>
+            <p class="mt-2 text-sm text-slate-300/80 line-clamp-2">Perayaan seni, budaya, dan kreativitas lokal dengan pameran serta pertunjukan live sepanjang hari.</p>
+            <div class="my-4 border-t border-white/10"></div>
+            <ul class="space-y-2.5 text-sm">
+              <li class="flex items-center gap-2.5 text-slate-300">
+                <span class="w-7 h-7 rounded-lg bg-brand-600/25 border border-brand-500/30 grid place-items-center flex-shrink-0">
+                  <svg class="w-3.5 h-3.5 text-brand-100" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+                </span>
+                <span><span class="text-slate-400">Tanggal:</span> <span class="text-white font-semibold">Minggu, 15 Desember 2025</span></span>
+              </li>
+              <li class="flex items-center gap-2.5 text-slate-300">
+                <span class="w-7 h-7 rounded-lg bg-fuchsia-600/25 border border-fuchsia-500/30 grid place-items-center flex-shrink-0">
+                  <svg class="w-3.5 h-3.5 text-fuchsia-200" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+                </span>
+                <span><span class="text-slate-400">Waktu:</span> <span class="text-white font-semibold">16:00 – 22:00 WIB</span></span>
+              </li>
+              <li class="flex items-center gap-2.5 text-slate-300">
+                <span class="w-7 h-7 rounded-lg bg-emerald-600/25 border border-emerald-500/30 grid place-items-center flex-shrink-0">
+                  <svg class="w-3.5 h-3.5 text-emerald-200" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 12-9 12s-9-5-9-12a9 9 0 1 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                </span>
+                <span class="line-clamp-1"><span class="text-slate-400">Lokasi:</span> <span class="text-white font-semibold">Taman Budaya Yogyakarta</span></span>
+              </li>
+              <li class="flex items-center gap-2.5 text-slate-300">
+                <span class="w-7 h-7 rounded-lg bg-slate-600/25 border border-slate-500/30 grid place-items-center flex-shrink-0">
+                  <svg class="w-3.5 h-3.5 text-slate-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="6"/><path d="M9 14l-2 8 5-3 5 3-2-8"/></svg>
+                </span>
+                <span><span class="text-slate-400">Sertifikat:</span> <span class="text-slate-400 font-semibold">Tidak tersedia</span></span>
+              </li>
+            </ul>
+            <div class="mt-6 pt-4 border-t border-white/10 flex items-center justify-between gap-3">
+              <div class="flex -space-x-2">
+                <div class="w-7 h-7 rounded-full bg-gradient-to-br from-violet-500 to-purple-600 border-2 border-ink"></div>
+                <div class="w-7 h-7 rounded-full bg-gradient-to-br from-yellow-400 to-amber-500 border-2 border-ink"></div>
+                <div class="w-7 h-7 rounded-full bg-white/10 border-2 border-ink grid place-items-center text-[10px] font-bold">+1k</div>
+              </div>
+              <a href="#" class="inline-flex items-center gap-1.5 text-sm font-semibold px-4 py-2 rounded-xl bg-gradient-to-r from-brand-500 to-fuchsia-500 text-white shadow-glow hover:scale-105 transition">
+                Pesan Tiket
+                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+              </a>
+            </div>
+          </div>
+        </article>
+
+        <!-- CARD 4 -->
+        <article class="group glass bg-white/5 border border-white/10 rounded-3xl overflow-hidden hover:border-amber-500/50 hover:-translate-y-2 transition duration-300 shadow-soft flex flex-col">
+          <div class="relative h-56 overflow-hidden">
+            <img src="https://images.unsplash.com/photo-1511578314322-379afb476865?auto=format&fit=crop&w=800&q=80" alt="Flyer" class="w-full h-full object-cover group-hover:scale-110 transition duration-700" />
+            <div class="absolute inset-0 bg-gradient-to-t from-ink/95 via-ink/30 to-transparent"></div>
+            <span class="absolute top-4 left-4 text-xs font-bold px-3 py-1.5 rounded-full bg-amber-500/90 text-white backdrop-blur border border-white/20">🛠️ Workshop</span>
+            <span class="absolute top-4 right-4 text-xs font-bold px-3 py-1.5 rounded-full bg-white/95 text-ink">Rp 200K</span>
+            <span class="absolute bottom-4 right-4 text-[10px] font-bold px-2.5 py-1 rounded-full bg-emerald-500/95 text-white backdrop-blur inline-flex items-center gap-1">
+              <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M5 13l4 4L19 7"/></svg>
+              Sertifikat
+            </span>
+          </div>
+          <div class="p-6 flex flex-col flex-1">
+            <h3 class="text-lg font-bold leading-snug group-hover:text-amber-100 transition line-clamp-2">UI/UX Design Masterclass</h3>
+            <p class="mt-2 text-sm text-slate-300/80 line-clamp-2">Belajar langsung dari praktisi desain profesional dengan studi kasus nyata dan portofolio.</p>
+            <div class="my-4 border-t border-white/10"></div>
+            <ul class="space-y-2.5 text-sm">
+              <li class="flex items-center gap-2.5 text-slate-300">
+                <span class="w-7 h-7 rounded-lg bg-brand-600/25 border border-brand-500/30 grid place-items-center flex-shrink-0">
+                  <svg class="w-3.5 h-3.5 text-brand-100" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+                </span>
+                <span><span class="text-slate-400">Tanggal:</span> <span class="text-white font-semibold">Sabtu, 18 Januari 2026</span></span>
+              </li>
+              <li class="flex items-center gap-2.5 text-slate-300">
+                <span class="w-7 h-7 rounded-lg bg-fuchsia-600/25 border border-fuchsia-500/30 grid place-items-center flex-shrink-0">
+                  <svg class="w-3.5 h-3.5 text-fuchsia-200" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+                </span>
+                <span><span class="text-slate-400">Waktu:</span> <span class="text-white font-semibold">13:00 – 17:00 WIB</span></span>
+              </li>
+              <li class="flex items-center gap-2.5 text-slate-300">
+                <span class="w-7 h-7 rounded-lg bg-emerald-600/25 border border-emerald-500/30 grid place-items-center flex-shrink-0">
+                  <svg class="w-3.5 h-3.5 text-emerald-200" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 12-9 12s-9-5-9-12a9 9 0 1 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                </span>
+                <span class="line-clamp-1"><span class="text-slate-400">Lokasi:</span> <span class="text-white font-semibold">Creative Hub, Bandung</span></span>
+              </li>
+              <li class="flex items-center gap-2.5 text-slate-300">
+                <span class="w-7 h-7 rounded-lg bg-amber-600/25 border border-amber-500/30 grid place-items-center flex-shrink-0">
+                  <svg class="w-3.5 h-3.5 text-amber-200" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="6"/><path d="M9 14l-2 8 5-3 5 3-2-8"/></svg>
+                </span>
+                <span><span class="text-slate-400">Sertifikat:</span> <span class="text-emerald-300 font-semibold">Tersedia (E-Sertifikat)</span></span>
+              </li>
+            </ul>
+            <div class="mt-6 pt-4 border-t border-white/10 flex items-center justify-between gap-3">
+              <div class="flex -space-x-2">
+                <div class="w-7 h-7 rounded-full bg-gradient-to-br from-cyan-400 to-blue-500 border-2 border-ink"></div>
+                <div class="w-7 h-7 rounded-full bg-gradient-to-br from-fuchsia-400 to-pink-500 border-2 border-ink"></div>
+                <div class="w-7 h-7 rounded-full bg-white/10 border-2 border-ink grid place-items-center text-[10px] font-bold">+500</div>
+              </div>
+              <a href="#" class="inline-flex items-center gap-1.5 text-sm font-semibold px-4 py-2 rounded-xl bg-gradient-to-r from-brand-500 to-fuchsia-500 text-white shadow-glow hover:scale-105 transition">
+                Pesan Tiket
+                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+              </a>
+            </div>
+          </div>
+        </article>
+
+        <!-- CARD 5 -->
+        <article class="group glass bg-white/5 border border-white/10 rounded-3xl overflow-hidden hover:border-brand-500/50 hover:-translate-y-2 transition duration-300 shadow-soft flex flex-col">
+          <div class="relative h-56 overflow-hidden">
+            <img src="https://images.unsplash.com/photo-1459749411175-04bf5292ceea?auto=format&fit=crop&w=800&q=80" alt="Flyer" class="w-full h-full object-cover group-hover:scale-110 transition duration-700" />
+            <div class="absolute inset-0 bg-gradient-to-t from-ink/95 via-ink/30 to-transparent"></div>
+            <span class="absolute top-4 left-4 text-xs font-bold px-3 py-1.5 rounded-full bg-brand-600/90 text-white backdrop-blur border border-white/20">🎸 Musik</span>
+            <span class="absolute top-4 right-4 text-xs font-bold px-3 py-1.5 rounded-full bg-white/95 text-ink">Rp 450K</span>
+            <span class="absolute bottom-4 right-4 text-[10px] font-bold px-2.5 py-1 rounded-full bg-slate-700/90 text-slate-200 backdrop-blur inline-flex items-center gap-1 border border-white/20">
+              <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+              Tanpa Sertifikat
+            </span>
+          </div>
+          <div class="p-6 flex flex-col flex-1">
+            <h3 class="text-lg font-bold leading-snug group-hover:text-brand-100 transition line-clamp-2">Rock Symphony Live</h3>
+            <p class="mt-2 text-sm text-slate-300/80 line-clamp-2">Kolaborasi megah antara band rock legendaris dengan orkestra simfoni nasional dalam satu panggung.</p>
+            <div class="my-4 border-t border-white/10"></div>
+            <ul class="space-y-2.5 text-sm">
+              <li class="flex items-center gap-2.5 text-slate-300">
+                <span class="w-7 h-7 rounded-lg bg-brand-600/25 border border-brand-500/30 grid place-items-center flex-shrink-0">
+                  <svg class="w-3.5 h-3.5 text-brand-100" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+                </span>
+                <span><span class="text-slate-400">Tanggal:</span> <span class="text-white font-semibold">Sabtu, 10 Januari 2026</span></span>
+              </li>
+              <li class="flex items-center gap-2.5 text-slate-300">
+                <span class="w-7 h-7 rounded-lg bg-fuchsia-600/25 border border-fuchsia-500/30 grid place-items-center flex-shrink-0">
+                  <svg class="w-3.5 h-3.5 text-fuchsia-200" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+                </span>
+                <span><span class="text-slate-400">Waktu:</span> <span class="text-white font-semibold">20:00 – 23:30 WIB</span></span>
+              </li>
+              <li class="flex items-center gap-2.5 text-slate-300">
+                <span class="w-7 h-7 rounded-lg bg-emerald-600/25 border border-emerald-500/30 grid place-items-center flex-shrink-0">
+                  <svg class="w-3.5 h-3.5 text-emerald-200" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 12-9 12s-9-5-9-12a9 9 0 1 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                </span>
+                <span class="line-clamp-1"><span class="text-slate-400">Lokasi:</span> <span class="text-white font-semibold">Gelora Bung Karno, Jakarta</span></span>
+              </li>
+              <li class="flex items-center gap-2.5 text-slate-300">
+                <span class="w-7 h-7 rounded-lg bg-slate-600/25 border border-slate-500/30 grid place-items-center flex-shrink-0">
+                  <svg class="w-3.5 h-3.5 text-slate-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="6"/><path d="M9 14l-2 8 5-3 5 3-2-8"/></svg>
+                </span>
+                <span><span class="text-slate-400">Sertifikat:</span> <span class="text-slate-400 font-semibold">Tidak tersedia</span></span>
+              </li>
+            </ul>
+            <div class="mt-6 pt-4 border-t border-white/10 flex items-center justify-between gap-3">
+              <div class="flex -space-x-2">
+                <div class="w-7 h-7 rounded-full bg-gradient-to-br from-slate-400 to-slate-600 border-2 border-ink"></div>
+                <div class="w-7 h-7 rounded-full bg-gradient-to-br from-indigo-500 to-blue-600 border-2 border-ink"></div>
+                <div class="w-7 h-7 rounded-full bg-white/10 border-2 border-ink grid place-items-center text-[10px] font-bold">+5k</div>
+              </div>
+              <a href="#" class="inline-flex items-center gap-1.5 text-sm font-semibold px-4 py-2 rounded-xl bg-gradient-to-r from-brand-500 to-fuchsia-500 text-white shadow-glow hover:scale-105 transition">
+                Pesan Tiket
+                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+              </a>
+            </div>
+          </div>
+        </article>
+
+        <!-- CARD 6 -->
+        <article class="group glass bg-white/5 border border-white/10 rounded-3xl overflow-hidden hover:border-rose-500/50 hover:-translate-y-2 transition duration-300 shadow-soft flex flex-col">
+          <div class="relative h-56 overflow-hidden">
+            <img src="https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?auto=format&fit=crop&w=800&q=80" alt="Flyer" class="w-full h-full object-cover group-hover:scale-110 transition duration-700" />
+            <div class="absolute inset-0 bg-gradient-to-t from-ink/95 via-ink/30 to-transparent"></div>
+            <span class="absolute top-4 left-4 text-xs font-bold px-3 py-1.5 rounded-full bg-rose-500/90 text-white backdrop-blur border border-white/20">🎉 Festival</span>
+            <span class="absolute top-4 right-4 text-xs font-bold px-3 py-1.5 rounded-full bg-white/95 text-ink">Rp 350K</span>
+            <span class="absolute bottom-4 right-4 text-[10px] font-bold px-2.5 py-1 rounded-full bg-emerald-500/95 text-white backdrop-blur inline-flex items-center gap-1">
+              <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M5 13l4 4L19 7"/></svg>
+              Sertifikat
+            </span>
+          </div>
+          <div class="p-6 flex flex-col flex-1">
+            <h3 class="text-lg font-bold leading-snug group-hover:text-rose-100 transition line-clamp-2">Sunset Beach Festival</h3>
+            <p class="mt-2 text-sm text-slate-300/80 line-clamp-2">Nikmati matahari terbenam dengan alunan musik chill di tepi pantai eksotis bersama ribuan penonton.</p>
+            <div class="my-4 border-t border-white/10"></div>
+            <ul class="space-y-2.5 text-sm">
+              <li class="flex items-center gap-2.5 text-slate-300">
+                <span class="w-7 h-7 rounded-lg bg-brand-600/25 border border-brand-500/30 grid place-items-center flex-shrink-0">
+                  <svg class="w-3.5 h-3.5 text-brand-100" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+                </span>
+                <span><span class="text-slate-400">Tanggal:</span> <span class="text-white font-semibold">Rabu, 5 Februari 2026</span></span>
+              </li>
+              <li class="flex items-center gap-2.5 text-slate-300">
+                <span class="w-7 h-7 rounded-lg bg-fuchsia-600/25 border border-fuchsia-500/30 grid place-items-center flex-shrink-0">
+                  <svg class="w-3.5 h-3.5 text-fuchsia-200" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+                </span>
+                <span><span class="text-slate-400">Waktu:</span> <span class="text-white font-semibold">17:00 – 22:00 WITA</span></span>
+              </li>
+              <li class="flex items-center gap-2.5 text-slate-300">
+                <span class="w-7 h-7 rounded-lg bg-emerald-600/25 border border-emerald-500/30 grid place-items-center flex-shrink-0">
+                  <svg class="w-3.5 h-3.5 text-emerald-200" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 12-9 12s-9-5-9-12a9 9 0 1 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                </span>
+                <span class="line-clamp-1"><span class="text-slate-400">Lokasi:</span> <span class="text-white font-semibold">Pantai Kuta, Bali</span></span>
+              </li>
+              <li class="flex items-center gap-2.5 text-slate-300">
+                <span class="w-7 h-7 rounded-lg bg-amber-600/25 border border-amber-500/30 grid place-items-center flex-shrink-0">
+                  <svg class="w-3.5 h-3.5 text-amber-200" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="6"/><path d="M9 14l-2 8 5-3 5 3-2-8"/></svg>
+                </span>
+                <span><span class="text-slate-400">Sertifikat:</span> <span class="text-emerald-300 font-semibold">Tersedia (E-Sertifikat)</span></span>
+              </li>
+            </ul>
+            <div class="mt-6 pt-4 border-t border-white/10 flex items-center justify-between gap-3">
+              <div class="flex -space-x-2">
+                <div class="w-7 h-7 rounded-full bg-gradient-to-br from-orange-400 to-red-500 border-2 border-ink"></div>
+                <div class="w-7 h-7 rounded-full bg-gradient-to-br from-teal-400 to-cyan-500 border-2 border-ink"></div>
+                <div class="w-7 h-7 rounded-full bg-white/10 border-2 border-ink grid place-items-center text-[10px] font-bold">+3k</div>
+              </div>
+              <a href="#" class="inline-flex items-center gap-1.5 text-sm font-semibold px-4 py-2 rounded-xl bg-gradient-to-r from-brand-500 to-fuchsia-500 text-white shadow-glow hover:scale-105 transition">
+                Pesan Tiket
+                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+              </a>
+            </div>
+          </div>
+        </article>
+
+      </div>
+
+      <div class="mt-14 text-center">
+        <a href="#" class="inline-flex items-center gap-2 px-8 py-4 rounded-2xl border border-white/15 bg-white/5 hover:bg-white/10 font-semibold transition">
+          Lihat Semua Event
+          <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== CTA ===== -->
+  <section id="contact" class="relative py-20 md:py-28 px-4">
+    <div class="max-w-5xl mx-auto">
+      <div class="relative overflow-hidden rounded-3xl border border-white/10 glass bg-gradient-to-br from-brand-600/30 via-fuchsia-500/20 to-transparent p-8 sm:p-12 md:p-16 text-center shadow-glow">
+        <div class="absolute -top-24 -right-24 w-72 h-72 bg-brand-500/40 blur-3xl rounded-full"></div>
+        <div class="absolute -bottom-24 -left-24 w-72 h-72 bg-fuchsia-500/30 blur-3xl rounded-full"></div>
+
+        <div class="relative">
+          <h2 class="text-3xl sm:text-4xl md:text-5xl font-extrabold leading-tight tracking-tight">
+            Siap Hadir di <span class="text-gradient">Event Berikutnya?</span>
+          </h2>
+          <p class="mt-5 max-w-2xl mx-auto text-slate-200/90">
+            Daftar sekarang dan dapatkan notifikasi event terbaru, promo eksklusif, serta akses presale hanya untuk member Tixora.
+          </p>
+          <div class="mt-10 flex flex-col sm:flex-row gap-4 justify-center items-center max-w-lg mx-auto">
+            <input type="email" placeholder="Masukkan email kamu"
+              class="w-full px-5 py-4 rounded-2xl bg-white/10 border border-white/15 placeholder:text-slate-400 text-white outline-none focus:border-brand-400 focus:ring-2 focus:ring-brand-500/40 transition" />
+            <button class="w-full sm:w-auto px-8 py-4 rounded-2xl bg-gradient-to-r from-brand-500 to-fuchsia-500 text-white font-semibold shadow-glow hover:scale-[1.03] transition whitespace-nowrap">
+              Daftar Gratis
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="border-t border-white/10 py-10 px-4">
+    <div class="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
+      <div class="flex items-center gap-2">
+        <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-brand-500 to-fuchsia-500 grid place-items-center">
+          <svg class="w-4 h-4 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 9a3 3 0 0 0 0 6v3a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-3a3 3 0 0 1 0-6V6a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2z"/>
+          </svg>
+        </div>
+        <span class="font-extrabold">Tix<span class="text-gradient">ora</span></span>
+      </div>
+      <p class="text-sm text-slate-400 text-center">© 2025 Tixora. Semua hak dilindungi.</p>
+      <div class="flex items-center gap-4 text-slate-400">
+        <a href="#" class="hover:text-white transition">Instagram</a>
+        <a href="#" class="hover:text-white transition">Twitter</a>
+        <a href="#" class="hover:text-white transition">TikTok</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Burger menu
+    const burger = document.getElementById('burger');
+    const menu = document.getElementById('mobileMenu');
+    burger.addEventListener('click', () => menu.classList.toggle('hidden'));
+
+    // Mobile search toggle
+    const mobileSearchBtn = document.getElementById('mobileSearchBtn');
+    const mobileSearchWrap = document.getElementById('mobileSearchWrap');
+    mobileSearchBtn.addEventListener('click', () => {
+      mobileSearchWrap.classList.toggle('hidden');
+      if (!mobileSearchWrap.classList.contains('hidden')) {
+        mobileSearchWrap.querySelector('input').focus();
+      }
+    });
+
+    // Keyboard shortcut: Ctrl/Cmd + K → focus search (desktop)
+    document.addEventListener('keydown', (e) => {
+      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') {
+        e.preventDefault();
+        const input = document.getElementById('searchDesktop');
+        if (input) input.focus();
+      }
+      // ESC → blur search
+      if (e.key === 'Escape') {
+        document.activeElement?.blur?.();
+      }
+    });
+  </script>
+
+</body>
+</html>

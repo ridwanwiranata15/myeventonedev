@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Verifikasi Email — Tixora</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: { sans: ['Plus Jakarta Sans', 'sans-serif'] },
+          colors: {
+            brand: { 50:'#eef2ff',100:'#e0e7ff',500:'#6366f1',600:'#4f46e5',700:'#4338ca' },
+            ink: '#0b1020'
+          },
+          boxShadow: {
+            glow: '0 20px 60px -20px rgba(99,102,241,.55)',
+            soft: '0 10px 40px -12px rgba(15,23,42,.15)'
+          },
+          animation: {
+            'fade-up': 'fadeUp .7s ease-out both',
+            'fade-in': 'fadeIn .5s ease-out both',
+            'shake': 'shake .4s ease-in-out',
+            'pulse-ring': 'pulseRing 1.8s ease-out infinite',
+          },
+          keyframes: {
+            fadeUp: {
+              '0%': { opacity: 0, transform: 'translateY(16px)' },
+              '100%': { opacity: 1, transform: 'translateY(0)' },
+            },
+            fadeIn: {
+              '0%': { opacity: 0 },
+              '100%': { opacity: 1 },
+            },
+            shake: {
+              '0%,100%': { transform: 'translateX(0)' },
+              '25%': { transform: 'translateX(-8px)' },
+              '75%': { transform: 'translateX(8px)' },
+            },
+            pulseRing: {
+              '0%': { transform: 'scale(.85)', opacity: .7 },
+              '100%': { transform: 'scale(1.6)', opacity: 0 },
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    .glass { backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); }
+    .text-gradient {
+      background: linear-gradient(90deg,#818cf8,#c084fc,#f472b6);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+    .mesh {
+      background:
+        radial-gradient(60% 60% at 15% 10%, rgba(99,102,241,.35) 0%, transparent 60%),
+        radial-gradient(50% 50% at 85% 20%, rgba(192,132,252,.30) 0%, transparent 60%),
+        radial-gradient(60% 60% at 50% 100%, rgba(244,114,182,.22) 0%, transparent 60%);
+    }
+    input:focus { outline: none; }
+
+    /* OTP input */
+    .otp-input {
+      width: 100%;
+      aspect-ratio: 1 / 1.15;
+      text-align: center;
+      font-size: clamp(1.25rem, 5vw, 1.75rem);
+      font-weight: 800;
+      letter-spacing: .05em;
+      background: rgba(255,255,255,.05);
+      border: 1.5px solid rgba(255,255,255,.1);
+      border-radius: 1rem;
+      color: #fff;
+      transition: all .2s ease;
+      caret-color: #a5b4fc;
+    }
+    .otp-input:hover { background: rgba(255,255,255,.08); }
+    .otp-input:focus {
+      background: rgba(255,255,255,.1);
+      border-color: rgba(99,102,241,.7);
+      box-shadow: 0 0 0 4px rgba(99,102,241,.18);
+      transform: translateY(-2px);
+    }
+    .otp-input.filled {
+      border-color: rgba(129,140,248,.7);
+      background: linear-gradient(180deg, rgba(99,102,241,.18), rgba(192,132,252,.10));
+    }
+    .otp-input.error {
+      border-color: rgba(244,63,94,.7);
+      box-shadow: 0 0 0 4px rgba(244,63,94,.15);
+    }
+    .otp-input:disabled { opacity: .5; }
+  </style>
+</head>
+
+<body class="bg-ink text-slate-100 font-sans antialiased min-h-screen">
+
+  <!-- Background Decor -->
+  <div class="fixed inset-0 mesh pointer-events-none -z-10"></div>
+  <div class="fixed top-[-10%] left-[-10%] w-[500px] h-[500px] bg-brand-600/20 blur-[120px] rounded-full -z-10"></div>
+  <div class="fixed bottom-[-10%] right-[-10%] w-[500px] h-[500px] bg-fuchsia-500/20 blur-[120px] rounded-full -z-10"></div>
+
+  <!-- ===== NAVBAR MINIMAL ===== -->
+  <header class="fixed top-4 left-0 right-0 z-50 px-4">
+    <nav class="glass mx-auto max-w-7xl bg-white/5 border border-white/10 rounded-2xl shadow-soft">
+      <div class="px-4 sm:px-5">
+        <div class="flex items-center justify-between h-16">
+          <a href="#" class="flex items-center gap-2 group">
+            <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-brand-500 to-fuchsia-500 grid place-items-center shadow-glow group-hover:scale-105 transition">
+              <svg class="w-5 h-5 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M3 9a3 3 0 0 0 0 6v3a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-3a3 3 0 0 1 0-6V6a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2z"/>
+              </svg>
+            </div>
+            <span class="text-lg font-extrabold tracking-tight">Tix<span class="text-gradient">ora</span></span>
+          </a>
+
+          <a href="#" class="inline-flex items-center gap-1.5 text-sm font-semibold text-slate-300 hover:text-white transition">
+            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="9"/><path d="M12 8v4M12 16h.01"/>
+            </svg>
+            <span class="hidden sm:inline">Bantuan</span>
+          </a>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <!-- ===== MAIN ===== -->
+  <main class="relative min-h-screen flex items-center justify-center px-4 pt-32 pb-16">
+    <div class="w-full max-w-lg">
+
+      <!-- Card -->
+      <div class="glass bg-white/5 border border-white/10 rounded-3xl p-6 sm:p-10 shadow-soft animate-fade-up">
+
+        <!-- Back button -->
+        <a href="#" class="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-400 hover:text-white transition mb-6">
+          <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M11 18l-6-6 6-6"/></svg>
+          Kembali ke Registrasi
+        </a>
+
+        <!-- Icon + heading -->
+        <div class="text-center">
+          <div class="relative inline-flex mb-6">
+            <div class="absolute inset-0 rounded-2xl bg-gradient-to-br from-brand-500 to-fuchsia-500 blur-xl opacity-50"></div>
+            <div class="relative w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-gradient-to-br from-brand-500 to-fuchsia-500 grid place-items-center shadow-glow">
+              <svg class="w-8 h-8 sm:w-10 sm:h-10 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/>
+              </svg>
+            </div>
+            <!-- pulse ring -->
+            <span class="absolute inset-0 rounded-2xl border-2 border-brand-500/60 animate-pulse-ring"></span>
+          </div>
+
+          <h1 class="text-2xl sm:text-3xl font-extrabold tracking-tight">
+            Verifikasi <span class="text-gradient">Email</span> Kamu
+          </h1>
+          <p class="mt-3 text-sm text-slate-400 max-w-sm mx-auto leading-relaxed">
+            Kami telah mengirim 6-digit kode OTP ke email
+          </p>
+          <p class="mt-1 text-sm font-bold text-white inline-flex items-center gap-2 max-w-full">
+            <span class="truncate max-w-[220px] sm:max-w-none">andi.pratama@email.com</span>
+            <button type="button" id="copyEmail" class="p-1 rounded-md hover:bg-white/10 text-slate-400 hover:text-white transition" title="Salin email">
+              <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/>
+              </svg>
+            </button>
+          </p>
+        </div>
+
+        <!-- ===== OTP FORM ===== -->
+        <form id="otpForm" class="mt-10" novalidate>
+
+          <label class="block text-sm font-semibold text-slate-200 mb-3 text-center">
+            Masukkan Kode OTP
+          </label>
+
+          <!-- 6 OTP boxes -->
+          <div id="otpWrap" class="grid grid-cols-6 gap-2 sm:gap-3 max-w-sm mx-auto">
+            <input class="otp-input" inputmode="numeric" autocomplete="one-time-code" maxlength="1" data-otp aria-label="Digit 1" />
+            <input class="otp-input" inputmode="numeric" maxlength="1" data-otp aria-label="Digit 2" />
+            <input class="otp-input" inputmode="numeric" maxlength="1" data-otp aria-label="Digit 3" />
+            <input class="otp-input" inputmode="numeric" maxlength="1" data-otp aria-label="Digit 4" />
+            <input class="otp-input" inputmode="numeric" maxlength="1" data-otp aria-label="Digit 5" />
+            <input class="otp-input" inputmode="numeric" maxlength="1" data-otp aria-label="Digit 6" />
+          </div>
+
+          <!-- Error message -->
+          <p id="otpError" class="hidden items-center justify-center gap-1.5 text-xs text-rose-300 mt-4">
+            <svg class="w-3.5 h-3.5 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 8v4M12 16h.01"/></svg>
+            <span id="otpErrorText">Kode OTP tidak valid.</span>
+          </p>
+
+          <!-- Progress bar -->
+          <div class="mt-6 max-w-sm mx-auto">
+            <div class="h-1 rounded-full bg-white/10 overflow-hidden">
+              <div id="otpProgress" class="h-full w-0 rounded-full bg-gradient-to-r from-brand-500 to-fuchsia-500 transition-all duration-300"></div>
+            </div>
+            <div class="flex items-center justify-between mt-2 text-[11px] text-slate-500 font-medium">
+              <span id="otpProgressText">0/6 digit terisi</span>
+              <span id="otpStatusText" class="text-slate-500"></span>
+            </div>
+          </div>
+
+          <!-- Submit -->
+          <button type="submit" id="verifyBtn" disabled
+            class="mt-6 w-full py-4 rounded-2xl bg-gradient-to-r from-brand-500 to-fuchsia-500 text-white font-bold shadow-glow hover:scale-[1.02] transition inline-flex items-center justify-center gap-2 disabled:opacity-40 disabled:pointer-events-none disabled:shadow-none">
+            <span class="btn-text inline-flex items-center gap-2">
+              Verifikasi Sekarang
+              <svg class="w-4.5 h-4.5" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+            </span>
+            <svg class="btn-spinner hidden w-5 h-5 animate-spin" viewBox="0 0 24 24" fill="none">
+              <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="3" opacity=".25"/>
+              <path d="M21 12a9 9 0 0 0-9-9" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+            </svg>
+          </button>
+        </form>
+
+        <!-- ===== RESEND ===== -->
+        <div class="mt-8 pt-6 border-t border-white/10 text-center">
+          <p class="text-sm text-slate-400">
+            Tidak menerima kode?
+          </p>
+          <div id="resendWrap" class="mt-2">
+            <!-- Belum bisa kirim ulang -->
+            <p id="cooldownText" class="inline-flex items-center gap-2 text-sm font-semibold text-slate-300">
+              <svg class="w-4 h-4 text-brand-100" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>
+              </svg>
+              Kirim ulang dalam <span id="countdown" class="text-white tabular-nums">01:00</span>
+            </p>
+            <!-- Tombol resend -->
+            <button type="button" id="resendBtn"
+              class="hidden items-center gap-1.5 text-sm font-bold text-brand-100 hover:text-white transition mx-auto">
+              <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 12a9 9 0 1 1-3-6.7"/><path d="M21 3v6h-6"/>
+              </svg>
+              Kirim Ulang Kode
+            </button>
+          </div>
+        </div>
+
+        <!-- Divider -->
+        <div class="mt-8 flex items-center gap-4">
+          <div class="flex-1 h-px bg-white/10"></div>
+          <span class="text-xs font-semibold uppercase tracking-widest text-slate-500">Tips</span>
+          <div class="flex-1 h-px bg-white/10"></div>
+        </div>
+
+        <!-- Tips -->
+        <ul class="mt-5 space-y-2.5 text-xs text-slate-400">
+          <li class="flex items-start gap-2">
+            <span class="mt-0.5 text-brand-100 flex-shrink-0">
+              <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M5 13l4 4L19 7"/></svg>
+            </span>
+            Cek folder <span class="text-slate-200 font-semibold">Spam / Promosi</span> jika tidak ada di Inbox.
+          </li>
+          <li class="flex items-start gap-2">
+            <span class="mt-0.5 text-brand-100 flex-shrink-0">
+              <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M5 13l4 4L19 7"/></svg>
+            </span>
+            Kode OTP berlaku selama <span class="text-slate-200 font-semibold">10 menit</span> sejak dikirim.
+          </li>
+          <li class="flex items-start gap-2">
+            <span class="mt-0.5 text-brand-100 flex-shrink-0">
+              <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M5 13l4 4L19 7"/></svg>
+            </span>
+            Jangan bagikan kode ini kepada siapa pun, termasuk tim Tixora.
+          </li>
+        </ul>
+
+      </div>
+
+      <!-- Bottom note -->
+      <p class="mt-6 text-center text-xs text-slate-500">
+        Email salah?
+        <a href="#" class="font-semibold text-brand-100 hover:text-white transition">Ubah alamat email</a>
+      </p>
+    </div>
+  </main>
+
+  <!-- ===== TOAST SUKSES ===== -->
+  <div id="toast" class="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 hidden">
+    <div class="glass bg-emerald-500/15 border border-emerald-500/40 rounded-2xl px-5 py-4 shadow-glow flex items-center gap-3 min-w-[280px] max-w-[90vw]">
+      <span class="w-9 h-9 rounded-xl bg-emerald-500/30 border border-emerald-500/50 grid place-items-center flex-shrink-0">
+        <svg class="w-5 h-5 text-emerald-200" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"/></svg>
+      </span>
+      <div>
+        <div class="font-bold text-sm text-white" id="toastTitle">Verifikasi Berhasil!</div>
+        <div class="text-xs text-emerald-100/90" id="toastMsg">Mengarahkan ke halaman utama...</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== TOAST INFO (untuk resend) ===== -->
+  <div id="toastInfo" class="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 hidden">
+    <div class="glass bg-brand-600/20 border border-brand-500/40 rounded-2xl px-5 py-4 shadow-glow flex items-center gap-3 min-w-[280px] max-w-[90vw]">
+      <span class="w-9 h-9 rounded-xl bg-brand-500/30 border border-brand-500/50 grid place-items-center flex-shrink-0">
+        <svg class="w-5 h-5 text-brand-100" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/>
+        </svg>
+      </span>
+      <div>
+        <div class="font-bold text-sm text-white">Kode Terkirim!</div>
+        <div class="text-xs text-brand-100/90">Cek email kamu untuk kode OTP baru.</div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    /* =============================================
+       1. OTP INPUT HANDLING (auto-focus, paste, dll)
+       ============================================= */
+    const otpInputs = [...document.querySelectorAll('[data-otp]')];
+    const otpForm = document.getElementById('otpForm');
+    const verifyBtn = document.getElementById('verifyBtn');
+    const otpError = document.getElementById('otpError');
+    const otpErrorText = document.getElementById('otpErrorText');
+    const otpProgress = document.getElementById('otpProgress');
+    const otpProgressText = document.getElementById('otpProgressText');
+    const otpStatusText = document.getElementById('otpStatusText');
+
+    // Fokus ke input pertama saat halaman dibuka
+    window.addEventListener('load', () => otpInputs[0]?.focus());
+
+    function getOTP() {
+      return otpInputs.map(i => i.value).join('');
+    }
+
+    function updateProgress() {
+      const filled = otpInputs.filter(i => i.value).length;
+      const pct = (filled / otpInputs.length) * 100;
+      otpProgress.style.width = pct + '%';
+      otpProgressText.textContent = `${filled}/${otpInputs.length} digit terisi`;
+
+      otpStatusText.textContent = filled === 6 ? 'Siap diverifikasi' : '';
+      otpStatusText.className = filled === 6 ? 'text-emerald-300 font-semibold' : 'text-slate-500';
+
+      verifyBtn.disabled = filled !== 6;
+    }
+
+    otpInputs.forEach((input, idx) => {
+      // Hanya angka
+      input.addEventListener('input', (e) => {
+        let v = e.target.value.replace(/\D/g, '');
+        e.target.value = v.slice(-1);
+
+        if (e.target.value) {
+          input.classList.add('filled');
+          if (idx < otpInputs.length - 1) otpInputs[idx + 1].focus();
+        } else {
+          input.classList.remove('filled');
+        }
+        clearError();
+        updateProgress();
+      });
+
+      // Enter → submit, Backspace → mundur
+      input.addEventListener('keydown', (e) => {
+        if (e.key === 'Backspace' && !input.value && idx > 0) {
+          otpInputs[idx - 1].focus();
+          otpInputs[idx - 1].value = '';
+          otpInputs[idx - 1].classList.remove('filled');
+          clearError();
+          updateProgress();
+        }
+        if (e.key === 'ArrowLeft' && idx > 0) otpInputs[idx - 1].focus();
+        if (e.key === 'ArrowRight' && idx < otpInputs.length - 1) otpInputs[idx + 1].focus();
+        if (e.key === 'Enter') {
+          e.preventDefault();
+          if (!verifyBtn.disabled) otpForm.requestSubmit();
+        }
+      });
+
+      // Klik → select isi
+      input.addEventListener('focus', () => input.select());
+
+      // Paste kode OTP di input mana pun
+      input.addEventListener('paste', (e) => {
+        e.preventDefault();
+        const pasted = (e.clipboardData || window.clipboardData).getData('text').replace(/\D/g, '').slice(0, 6);
+        if (!pasted) return;
+
+        // isi dari index 0
+        otpInputs.forEach((inp, i) => {
+          inp.value = pasted[i] || '';
+          inp.classList.toggle('filled', !!inp.value);
+        });
+
+        // focus ke input setelah digit terakhir
+        const nextIdx = Math.min(pasted.length, otpInputs.length - 1);
+        otpInputs[nextIdx].focus();
+
+        clearError();
+        updateProgress();
+
+        // Auto submit jika lengkap
+        if (pasted.length === 6) {
+          setTimeout(() => otpForm.requestSubmit(), 250);
+        }
+      });
+    });
+
+    /* =============================================
+       2. ERROR STATE
+       ============================================= */
+    function showError(msg) {
+      otpError.classList.remove('hidden');
+      otpError.classList.add('flex');
+      otpErrorText.textContent = msg;
+      otpInputs.forEach(i => i.classList.add('error'));
+      otpForm.closest('.glass').classList.add('animate-shake');
+      setTimeout(() => otpForm.closest('.glass').classList.remove('animate-shake'), 450);
+      otpInputs[0].focus();
+    }
+    function clearError() {
+      otpError.classList.add('hidden');
+      otpError.classList.remove('flex');
+      otpInputs.forEach(i => i.classList.remove('error'));
+    }
+
+    /* =============================================
+       3. SUBMIT OTP (simulasi)
+       ============================================= */
+    otpForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const code = getOTP();
+
+      if (code.length !== 6) {
+        showError('Kode OTP harus 6 digit.');
+        return;
+      }
+
+      // Validasi format (hanya angka — sudah dipastikan)
+      if (!/^\d{6}$/.test(code)) {
+        showError('Kode OTP harus berupa 6 angka.');
+        return;
+      }
+
+      // Loading state
+      const textEl = verifyBtn.querySelector('.btn-text');
+      const spinner = verifyBtn.querySelector('.btn-spinner');
+      verifyBtn.disabled = true;
+      textEl.classList.add('hidden');
+      spinner.classList.remove('hidden');
+
+      // === SIMULASI: cek kode benar (mis. 123456) ===
+      setTimeout(() => {
+        const CORRECT_OTP = '123456';
+
+        if (code !== CORRECT_OTP) {
+          // salah
+          textEl.classList.remove('hidden');
+          spinner.classList.add('hidden');
+          verifyBtn.disabled = false;
+          showError('Kode OTP salah atau sudah kedaluwarsa. Coba lagi.');
+          return;
+        }
+
+        // benar → sukses
+        showToast('success', 'Verifikasi Berhasil!', 'Mengarahkan ke halaman utama...');
+        setTimeout(() => { window.location.href = '#'; }, 1800);
+      }, 1400);
+    });
+
+    /* =============================================
+       4. COUNTDOWN RESEND OTP
+       ============================================= */
+    const COOLDOWN = 60; // detik
+    let remaining = COOLDOWN;
+    let timerId = null;
+
+    const countdownEl = document.getElementById('countdown');
+    const cooldownText = document.getElementById('cooldownText');
+    const resendBtn = document.getElementById('resendBtn');
+
+    function startCooldown() {
+      remaining = COOLDOWN;
+      cooldownText.classList.remove('hidden');
+      resendBtn.classList.add('hidden');
+      resendBtn.classList.remove('inline-flex');
+
+      clearInterval(timerId);
+      tick();
+      timerId = setInterval(tick, 1000);
+    }
+
+    function tick() {
+      const mm = String(Math.floor(remaining / 60)).padStart(2, '0');
+      const ss = String(remaining % 60).padStart(2, '0');
+      countdownEl.textContent = `${mm}:${ss}`;
+
+      if (remaining <= 0) {
+        clearInterval(timerId);
+        cooldownText.classList.add('hidden');
+        resendBtn.classList.remove('hidden');
+        resendBtn.classList.add('inline-flex');
+        return;
+      }
+      remaining--;
+    }
+
+    resendBtn.addEventListener('click', () => {
+      // Simulasi kirim ulang
+      resendBtn.disabled = true;
+      resendBtn.classList.remove('inline-flex');
+      resendBtn.classList.add('hidden');
+
+      showToast('info');
+
+      // reset OTP
+      otpInputs.forEach(i => { i.value = ''; i.classList.remove('filled'); });
+      clearError();
+      updateProgress();
+      otpInputs[0].focus();
+
+      // Mulai cooldown baru
+      setTimeout(() => startCooldown(), 400);
+    });
+
+    // Mulai cooldown saat halaman dibuka
+    startCooldown();
+
+    /* =============================================
+       5. TOAST
+       ============================================= */
+    const toast = document.getElementById('toast');
+    const toastInfo = document.getElementById('toastInfo');
+    const toastTitle = document.getElementById('toastTitle');
+    const toastMsg = document.getElementById('toastMsg');
+
+    function showToast(type, title, msg) {
+      const el = type === 'success' ? toast : toastInfo;
+      if (title) toastTitle.textContent = title;
+      if (msg) toastMsg.textContent = msg;
+
+      el.classList.remove('hidden');
+      el.classList.add('animate-fade-in');
+      setTimeout(() => {
+        el.classList.add('hidden');
+        el.classList.remove('animate-fade-in');
+      }, 3500);
+    }
+
+    /* =============================================
+       6. COPY EMAIL
+       ============================================= */
+    document.getElementById('copyEmail').addEventListener('click', async () => {
+      try {
+        await navigator.clipboard.writeText('andi.pratama@email.com');
+        showToast('info');
+      } catch (e) { /* ignore */ }
+    });
+
+    /* init */
+    updateProgress();
+  </script>
+
+</body>
+</html>
